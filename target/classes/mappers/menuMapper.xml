@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.MenuMapper">
+<!-- id = class명Map 으로 -->
+<resultMap type="MenuVO" id="menuMap">
+	<result property="menuNo" column="MENU_NO"/>
+	<result property="title" column="TITLE"/>
+	<result property="url" column="URL"/>
+	<result property="parentMenuNo" column="PARENT_MENU_NO"/>
+	<result property="level" column="LEVEL"/>
+	<result property="type" column="TYPE"/>
+</resultMap>
+
+<select id="list" resultMap="menuMap">
+	select	*
+	from menu_tb
+</select>
+
+
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.AppMessageMapper">
+	
+	<resultMap type="AppMessageVO" id="AppMessageMap">
+		<result column="NOTES_NO" property="notesNo"/>
+		<result column="RECV_USER_UID" property="recvUserUid"/>
+		<result column="SENT_USER_UID" property="sentUserUid"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="DATE_SENT" property="dateSent"/>
+		<result column="DATE_READ" property="dateRead"/>
+		<result column="RECV_READ" property="recvRead"/>
+		<result column="PHOTO_URL" property="photoUrl"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+	</resultMap>
+	
+	<resultMap type="UserVO" id="UserMap">
+		<result column="USER_UID" property="userUid"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+	</resultMap>
+
+	<select id="selectMessageList" parameterType="BookMarkPageVO" resultMap="AppMessageMap">
+		SELECT N.NOTES_NO, N.SENT_USER_UID, N.TITLE, N.DATE_SENT, N.RECV_READ, U.PHOTO_URL, U.DISPLAY_NAME
+		FROM NOTES_TB N, USER_TB U
+		WHERE RECV_USER_UID = #{userUid}
+			AND N.SENT_USER_UID = U.USER_UID
+		ORDER BY DATE_SENT DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="countMessageList" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM NOTES_TB
+		WHERE RECV_USER_UID = #{userUid}
+	</select>
+	
+	<update id="updateMessageState" parameterType="int">
+		UPDATE NOTES_TB
+		SET
+			RECV_READ = 'Y'
+		WHERE NOTES_NO = #{notesNo}
+	</update>
+	
+	<select id="selectMessageByNotesNo" parameterType="int" resultMap="AppMessageMap">
+		SELECT N.NOTES_NO, N.SENT_USER_UID, N.TITLE, N.CONTENT, N.DATE_SENT, N.RECV_READ, U.PHOTO_URL, U.DISPLAY_NAME
+		FROM NOTES_TB N, USER_TB U
+		WHERE N.NOTES_NO = #{notesNo}
+			AND N.SENT_USER_UID = U.USER_UID
+	</select>
+	
+	<select id="getUserInfo" parameterType="java.util.List" resultMap="UserMap">
+		SELECT USER_UID, DISPLAY_NAME
+		FROM USER_TB
+		WHERE
+		<foreach collection="list" item="item" index="index" separator="and">
+		<choose>
+			<when test='item == "ㄱ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '가' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '나'
+			</when>
+			<when test='item == "ㄴ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '나' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '다'
+			</when>
+			<when test='item == "ㄷ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '다' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '라'
+			</when>
+			<when test='item == "ㄹ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '라' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '마'
+			</when>
+			<when test='item == "ㅁ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '마' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '바'
+			</when>
+			<when test='item == "ㅂ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '바' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '사'
+			</when>
+			<when test='item == "ㅅ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '사' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '아'
+			</when>
+			<when test='item == "ㅇ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '아' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '자'
+			</when>
+			<when test='item == "ㅈ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '자' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '차'
+			</when>
+			<when test='item == "ㅊ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '차' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '카'
+			</when>
+			<when test='item == "ㅋ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '카' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '타'
+			</when>
+			<when test='item == "ㅌ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '타' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '파'
+			</when>
+			<when test='item == "ㅍ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '파' and substr(DISPLAY_NAME,#{index}+1,1) &lt;= '하'
+			</when>
+			<when test='item == "ㅎ"'>
+				substr(DISPLAY_NAME,#{index}+1,1) &gt;= '하' and substr(DISPLAY_NAME,#{index}+1,1) &lt; '힣'
+			</when>
+			<otherwise>
+				DISPLAY_NAME LIKE CONCAT('%', #{item}, '%')
+			</otherwise>
+		</choose>
+		</foreach>
+	</select>
+	
+	<insert id="insertMessage" parameterType="AppMessageVO">
+		INSERT INTO NOTES_TB (RECV_USER_UID, SENT_USER_UID, TITLE, CONTENT, RECV_READ)
+		VALUES (#{recvUserUid}, #{sentUserUid}, #{title}, #{content}, 'N')
+	</insert>
+</mapper>

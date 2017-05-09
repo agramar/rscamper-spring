@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.rscamper.PostMapper">
+
+<resultMap type="PostVO" id="postMap">
+	<result column="BOARD_NO" property="boardNo" />
+	<result column="CATEGORY_NO" property="categoryNo" />
+	<result column="NAME" property="categoryName" />
+	<result column="TITLE" property="title" />
+	<result column="USER_UID" property="userUid" />
+	<result column="DISPLAY_NAME" property="displayName" />
+	<result column="CONTENT" property="content" />
+	<result column="VIEW_CNT" property="viewCnt" />
+	<result column="REG_DATE" property="regDate" />
+</resultMap>
+
+<select id = "getTime" resultType="string">
+	select now()
+</select>
+
+
+<select id = "listAll" parameterType="hashmap" resultMap="postMap">
+	<![CDATA[
+		select *
+          from board_tb A JOIN user_tb B JOIN board_category_tb C
+            on A.USER_UID = B.USER_UID 
+           and A.CATEGORY_NO = C.CATEGORY_NO
+		   where BOARD_NO > 0 and A.USER_UID = #{uid}
+		   order by BOARD_NO desc
+		   LIMIT #{pageStart}, #{perPageNum}
+	 ]]>  
+</select>
+
+<select id = "totalCount" parameterType="UserVO" resultType = 'int'>
+	select count(*) from board_tb where USER_UID = #{userUid}
+</select>
+
+
+</mapper>

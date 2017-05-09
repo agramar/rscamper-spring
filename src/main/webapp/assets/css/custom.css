@@ -1,0 +1,17 @@
+/* 전체 CSS 설정 */
+
+.breadcrumbs {
+	padding: 0px;
+}
+
+/* 스크롤바 CSS */
+::-webkit-scrollbar {
+    width: 3px;
+}
+::-webkit-scrollbar-track-piece {
+    height: 30px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #acde83;
+    height: 30px;
+}

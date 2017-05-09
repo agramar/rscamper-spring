@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+#category-div section { padding: 0px 15px 0px 0px; }
+#category-div > div { padding: 0px; }
+#category-div button { width: 100%; height: 78px; margin-top: 10px; box-sizing: border-box; }
+#cat2-list, #sigungu-list { margin: 10px 0px 0px 0px; }
+#list { background-color: rgba(153, 153, 153, 0.2); border: 1px dashed lightgray; padding-left: 25px; padding-top: 20px; padding-right: 0px; margin-top: 20px; border-radius: 10px; }
+.cbp-item { width: 263px; }
+div[id^='list-title-'] { overflow: hidden; font-size: 17px !important; }
+.cbp-item:hover .cbp-l-grid-agency-title { background-color: darkgray; color: white !important; }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.NotisficationMapper">
+	<resultMap id="notisficationMap" type="NotisficationVO">
+	    <result column="NOTISFICATION_NO" property="notisficationNo" />
+	    <result column="RECIV_USER_UID" property="recivUserUid" />
+	    <result column="TARGET_USER_UID" property="targetUserUid" />
+	    <result column="NOTISFICATION_TYPE" property="type" />
+	    <result column="NOTISFICATION_CONTENT_ID" property="contentId" />
+	    <result column="NOTISFICATION_MESSAGE" property="message" />
+	    <result column="NOTISFICATION_URL" property="url" />
+	    <result column="NOTISFICATION_DATETIME" property="date" />
+	</resultMap>
+	
+	<select id="list" parameterType="string" resultMap="notisficationMap">
+	
+	SELECT *
+		FROM notisfication_tb                     
+		WHERE RECIV_USER_UID = #{userUid}
+		ORDER BY NOTISFICATION_NO DESC
+	</select>
+	
+	<delete id="deleteByNo" parameterType="int">
+	DELETE 
+		FROM notisfication_tb
+		WHERE NOTISFICATION_NO = #{NO}
+	</delete>
+	
+	
+	<!-- 쪽지 알림 등록 -->
+	<insert id="insertNotification" parameterType="NotisficationVO">
+		INSERT INTO notisfication_tb (reciv_user_uid, target_user_uid, notisfication_type, notisfication_content_id, notisfication_message, notisfication_url, title)
+		values (#{recivUserUid}, #{targetUserUid}, #{type}, #{contentId}, #{message}, #{url}, #{title})
+	</insert>
+
+
+</mapper>
+
+
+
+

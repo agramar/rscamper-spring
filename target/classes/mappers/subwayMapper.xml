@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.SubwayMapper">
+
+<select id="depPlaceId" resultType="string" parameterType="string">
+	select train_id as trainId
+	from train_tb
+	where station_title = #{station_title}
+</select>
+
+<select id="arrPlaceId" resultType="string" parameterType="string">
+	select train_id as trainId
+	from train_tb
+	where station_title = #{station_title}
+</select>
+
+<select id="mainTimeList" resultType="SubwayVO" parameterType="string">
+	select *
+	from train_tb
+
+</select>
+
+
+</mapper>

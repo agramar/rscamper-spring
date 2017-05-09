@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+	<mapper namespace="kr.co.rscamper.TravelogMapper">
+	
+		<resultMap type="TravelogVO" id="travelogMap">
+			<result column="BOARD_NO" property="boardNo" />
+			<result column="CATEGORY_NO" property="categoryNo" />
+			<result column="CATEGORY_NAME" property="categoryName" />
+			<result column="TITLE" property="title" />
+			<result column="USER_UID" property="userUid" />
+			<result column="DISPLAY_NAME" property="displayName" />
+			<result column="PROVIDER_PHOTO_URL" property="providerPhotoUrl" />
+			
+			<result column="CONTENT" property="content" />
+			<result column="VIEW_CNT" property="viewCnt" />
+			<result column="REG_DATE" property="regDate" />
+		</resultMap>
+		
+		<select id = "getTime" resultType="string">
+			select now()
+		</select>
+		
+		
+		<select id = "listAll" parameterType="pageVO" resultMap="travelogMap">
+			<![CDATA[
+				select *
+		          from board_tb A JOIN user_tb B JOIN board_category_tb C
+		            on A.USER_UID = B.USER_UID 
+		           and A.CATEGORY_NO = C.CATEGORY_NO
+				   where BOARD_NO > 0 and A.CATEGORY_NO = 2
+				   order by BOARD_NO desc
+				   LIMIT #{pageStart}, #{perPageNum}
+			 ]]>  
+		</select>
+		
+		<select id = "totalCount" resultType = 'int'>
+			select count(*) from board_tb
+			 where CATEGORY_NO = 2
+		</select>
+		
+		<insert id="insert" parameterType="TravelogVO" >
+			insert into board_tb (CATEGORY_NO, TITLE, USER_UID, CONTENT
+			) values (#{categoryNo}, #{title}, #{userUid}, #{content})
+		</insert>
+		
+		
+		<select id="selectByNo" parameterType="int" resultMap="travelogMap" >
+			select * 
+			  from board_tb A JOIN user_tb B JOIN board_category_tb C
+		            on A.USER_UID = B.USER_UID 
+		           and A.CATEGORY_NO = C.CATEGORY_NO
+		         where BOARD_NO = #{boardNo}
+		</select>
+		
+		<update id="updateBoard" parameterType="TravelogVO" >
+			update board_tb
+			   set TITLE = #{title}, CONTENT = #{content}, REG_DATE = now()
+			 where BOARD_NO = #{boardNo}
+		</update>
+		
+		<delete id="deleteBoardByBoardNo" parameterType="int" >
+			delete from board_tb where BOARD_NO = #{boardNo}
+		</delete>
+		
+		
+		
+		<!-- comment  -->
+		<resultMap type="CommentVO" id="travelogCommentMap">
+			<result column="COMMENT_NO" property="commentNo" />
+			<result column="TARGET_COMMENT_NO" property="targetCommentNo" />
+			<result column="BOARD_NO" property="boardNo" />
+			<result column="CONTENT" property="commentContent" />
+			<result column="REG_DATE" property="regDate" />
+			
+			<result column="USER_UID" property="userUid" />
+			<result column="PHOTO_URL" property="photoUrl" />
+			<result column="DISPLAY_NAME" property="displayName" />
+			<result column="PROVIDER_UID" property="providerUid" />
+			<result column="PROVIDER_NAME" property="providerName" />
+			<result column="PROVIDER_DISPLAY_NAME" property="providerDisplayName" />
+			<result column="PROVIDER_PHOTO_URL" property="providerPhotoUrl" />
+			<result column="PROVIDER_EMAIL" property="providerEmail" />
+			<result column="BGPHOTO_URL" property="bgPhotoUrl" />
+			<result column="PHONE_NUMBER" property="phoneNumber" />
+			<result column="WEBSITE_URL" property="websiteUrl" />
+		</resultMap>
+		
+		<select id="listComment" parameterType="int" resultMap="travelogCommentMap" >
+			<![CDATA[
+			select * 
+			  from board_comment_tb c, user_tb u
+			 where c.user_uid = u.user_uid
+			   and BOARD_NO = #{boardNo} 
+			   and COMMENT_NO > 0
+			 order by COMMENT_NO desc
+			 LIMIT #{page.pageStart}, #{page.perPageNum}
+			]]> 
+		</select>
+		
+		<insert id="insertComment" parameterType="CommentVO" >
+			insert into 
+				board_comment_tb(BOARD_NO, USER_UID, CONTENT, REG_DATE)
+				values ( #{boardNo}, #{userUid}, #{commentContent}, #{regDate})
+		</insert>
+		
+		<update id="updateComment" parameterType="CommentVO" >
+			update board_comment_tb
+			   set CONTENT = #{commentContent},  REG_DATE = now()
+			 where COMMENT_NO = #{commentNo}
+		</update>
+		
+		<delete id="delteteComment" parameterType="int" >
+			delete from board_comment_tb 
+			 where COMMENT_NO = #{commentNo}
+		</delete>
+		
+		<select id="count" resultType="int">
+			select count(BOARD_NO) from board_comment_tb
+			where BOARD_NO =#{boardNo}
+		</select>
+		
+		<select id="getBno" resultType="int">
+			select BOARD_NO as boardNo from board_comment_tb where COMMENT_NO = #{commentNo}
+		</select>
+		
+		<select id = "totalCountComment" resultType = 'int'>
+			select count(*) from board_comment_tb
+			 where BOARD_NO =#{boardNo}
+		</select>
+		
+		
+		<!-- 기타(좋아요, 북마크)  -->
+		<resultMap type="BoardLikeVO" id="BoardLikeVOMap">
+				<result column="TARGET_NO" property="targetNo"/>
+				<result column="TARGET_TYPE" property="targetType"/>
+				<result column="USER_UID" property="userUid"/>
+				<result column="REG_DATE" property="regDate"/>
+			</resultMap>
+			
+			<resultMap type="BoardBookMarkVO" id="BoardBookMarkVOMap">
+				<result column="TARGET_NO" property="targetNo"/>
+				<result column="TARGET_TYPE" property="targetType"/>
+				<result column="USER_UID" property="userUid"/>
+				<result column="REG_DATE" property="regDate"/>
+			</resultMap>
+			
+			<select id="selectBoardLike" parameterType="BoardLikeVO" resultType="int">
+				SELECT COUNT(*)
+				FROM BOARD_LIKE_TB
+				WHERE TARGET_NO = #{targetNo} AND TARGET_TYPE = #{targetType} AND USER_UID = #{userUid}
+			</select>
+			
+			<insert id="insertBoardLike" parameterType="BoardLikeVO">
+				INSERT INTO BOARD_LIKE_TB (TARGET_NO, TARGET_TYPE, USER_UID)
+				VALUES (#{targetNo}, #{targetType}, #{userUid})
+			</insert>
+			
+			<delete id="deleteBoardLike" parameterType="BoardLikeVO">
+				DELETE FROM BOARD_LIKE_TB
+				WHERE TARGET_NO = #{targetNo} AND TARGET_TYPE = #{targetType} AND USER_UID = #{userUid}
+			</delete>
+			
+			<select id="selectBoardBookMark" parameterType="BoardBookMarkVO" resultType="int">
+				SELECT COUNT(*)
+				FROM BOARD_BOOKMARK_TB
+				WHERE TARGET_NO = #{targetNo} AND TARGET_TYPE = #{targetType} AND USER_UID = #{userUid}
+			</select>
+			
+			<insert id="insertBoardBookMark" parameterType="BoardBookMarkVO">
+				INSERT INTO BOARD_BOOKMARK_TB (TARGET_NO, TARGET_TYPE, USER_UID)
+				VALUES (#{targetNo}, #{targetType}, #{userUid})
+			</insert>
+			
+			<delete id="deleteBoardBookMark" parameterType="BoardBookMarkVO">
+				DELETE FROM BOARD_BOOKMARK_TB
+				WHERE TARGET_NO = #{targetNo} AND TARGET_TYPE = #{targetType} AND USER_UID = #{userUid}
+			</delete>
+	
+	</mapper>

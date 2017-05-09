@@ -1,0 +1,217 @@
+@CHARSET "UTF-8";
+
+.plan-comment ul.comment-list {
+    list-style-type: none;
+    display: block;
+    margin: 0;
+    padding: 0px;
+}
+
+.plan-comment ul.comment-list li:first-child {
+    border-top: 1px solid #eee;
+}
+.plan-comment ul.comment-list li {
+    padding: 15px 0;
+    display: block;
+    border-bottom: 1px solid #eee;
+    clear: both;
+    position: relative;
+}
+
+
+.plan-comment ul.comment-list li div.profile-img {
+    display: block;
+    float: left;
+    width: 5%;
+    height: 40px;
+    vertical-align: top;
+}
+
+.author-info {
+    position: relative;
+    height: 50px;
+    padding: 8px 0;
+    margin: -1px 0 0;
+    border-top: 1px solid #eee;
+}
+
+.plan-comment .comment-write {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    background: #fff;
+}
+
+.plan-comment ul.comment-list .comment-txt p {
+    overflow: hidden;
+    width: 95%;
+    line-height: 24px;
+    padding: 2px 5% 0 0;
+    margin: 0;
+    color: #666;
+    font-size: 16px;
+    font-weight: 300;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+.plan-comment ul.comment-list li div.profile-img a img {
+    width: 40px;
+    height: 40px;
+    margin-top: 0;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+}
+
+.plan-comment ul.comment-list a.user .username {
+    font-weight: 400;
+}
+
+.plan-comment ul.comment-list .name-date .update-date {
+    font-size: 10px;
+    color: #999;
+}
+
+
+/* .spot-like-count a.on { */
+/*     background: url(https://www.wishbeen.co.kr/images/icon-plan-like-off.png) 0 3px no-repeat; */
+/* } */
+
+
+/* .spot-like-count a.off { */
+/*     background: url(https://www.wishbeen.co.kr/images/icon-plan-like-on.png) 0 3px no-repeat; */
+/* } */
+
+
+
+/* 대댓글 */
+
+.comment-edit, .plan-comment ul.comment-list .comment-reply {
+    position: relative;
+    width: 100%;
+    min-height: 50px;
+}
+
+.reply-image {
+    width: 6%;
+    display: block;
+    float: left;
+}
+
+
+li div.profile-img a img {
+    width: 40px;
+    height: 40px;
+    margin-top: 0;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+}
+ 
+ div.profile-img a.user {
+    width: 40px;
+    height: 40px;
+    display: block;
+    overflow: hidden;
+}
+
+ul.comment-list a.user {
+    display: inline;
+    margin-right: 5px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 400;
+}
+a, button {
+    cursor: pointer;
+}
+
+.comment-edit .comment-edit-mode {
+    position: relative;
+    width: 88%;
+    float: left;
+    padding: 0;
+    margin: 0 0 0 1%;
+}
+
+
+.comment-edit-mode textarea {
+    width: 87%;
+    resize: none;
+    height: 40px;
+    padding: 9px 135px 0 10px;
+    margin: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: 1px solid #eee;
+    background: #f6f6f6;
+    border-radius: 0;
+}
+.comment-edit-mode button, .comment-edit-mode textarea {
+    vertical-align: top;
+}
+
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.comment-edit-btns a, .comment-edit-btns button {
+    float: left;
+    display: block;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 0 15px;
+    margin: 0;
+}
+
+.commentROot {
+	position: relative;
+}
+.comment-deleteBtn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+} 
+
+#board-content {
+	border-top: 1px solid #eee;
+	padding: 10px;
+}
+
+#board-content img{
+	width: 100%;
+}
+
+#board-category {
+	font-size: 18px;
+	color: #ff8000!important;
+}
+
+#board-title {
+	font-size: 24px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: black;
+}

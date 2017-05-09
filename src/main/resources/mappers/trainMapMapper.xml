@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.TrainMapMapper">
+	<resultMap type="TrainMapVO" id="subwayMap">
+	<result property="mapNo" column="MAP_NO"/>
+	<result property="mapStationTitle" column="MAP_STATION_title"/>
+	<result property="mapLatitude" column="MAP_LATITUDE"/>
+	<result property="mapLongitude" column="MAP_LONGITUDE"/>
+</resultMap> 
+	<select id="TrainMapList" resultMap="subwayMap">
+		select *
+		
+		from train_map
+	</select>
+
+	<select id="TrainMapLineList" resultMap="subwayMap">
+		select *
+		from train_map a
+		inner join
+		train_map_line b
+		on train_type
+		where a.map_no = b.map_no
+	</select>
+
+</mapper>

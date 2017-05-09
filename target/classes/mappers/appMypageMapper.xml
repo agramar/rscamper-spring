@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.AppMypageMapper">
+
+	<resultMap type="BookMarkVO" id="BookMarkMap">
+		<result column="NO" property="no"/>
+		<result column="TARGET_TYPE" property="targetType"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="USER_UID" property="userUid"/>
+		<result column="TITLE" property="title"/>
+		<result column="STRAPLINE" property="strapline"/>
+		<result column="INTRODUCE" property="introduce"/>
+		<result column="PICTURE" property="picture"/>
+		<result column="PHOTO_URL" property="photoUrl"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+	</resultMap>
+	
+	<select id="selectBookMarkList" parameterType="BookMarkPageVO" resultMap="BookMarkMap">
+		(SELECT B.BOARD_NO AS NO, BB.TARGET_TYPE, BB.REG_DATE, B.USER_UID, TITLE, TITLE AS STRAPLINE, TITLE AS INTRODUCE, B.BOARD_NO AS PICTURE, U.PHOTO_URL, U.DISPLAY_NAME
+		 FROM BOARD_BOOKMARK_TB BB, BOARD_TB B, USER_TB U
+		 WHERE BB.USER_UID = #{userUid} AND BB.TARGET_TYPE = '1' AND BB.TARGET_NO = B.BOARD_NO AND B.USER_UID = U.USER_UID)
+		UNION
+		(SELECT R.RECORD_NO AS NO, BB.TARGET_TYPE, BB.REG_DATE, R.USER_UID, TITLE, R.STRAPLINE, R.INTRODUCE, R.PICTURE, U.PHOTO_URL, U.DISPLAY_NAME
+		 FROM BOARD_BOOKMARK_TB BB, RECORD_TB R, USER_TB U
+		 WHERE BB.USER_UID = #{userUid} AND BB.TARGET_TYPE = '3' AND BB.TARGET_NO = R.RECORD_NO AND R.USER_UID = U.USER_UID)
+		UNION
+		(SELECT BR.BOARD_ROUTE_NO AS NO, BR.TARGET_TYPE, BR.REG_DATE, BR.USER_UID, BR.TITLE, BR.TITLE AS STARPLINE, BR.TITLE AS INTRODUCE, BR.TARGET_TYPE AS PICTURE, U.PHOTO_URL, U.DISPLAY_NAME 
+		 FROM BOARD_BOOKMARK_TB BB, BOARD_ROUTE_TB BR, USER_TB U
+		 WHERE BB.USER_UID = #{userUid} AND BB.TARGET_TYPE = '2' AND BB.TARGET_NO = BR.BOARD_ROUTE_NO AND BR.USER_UID = U.USER_UID
+		 GROUP BY BR.BOARD_ROUTE_NO)
+		ORDER BY REG_DATE DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="countBookMark" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_BOOKMARK_TB
+		WHERE USER_UID = #{userUid}
+	</select>
+	
+	
+	
+	
+	
+	
+	<resultMap type="BoardRouteVO" id="BoardRouteMap">
+		<result column="BOARD_ROUTE_NO" property="boardRouteNo"/>
+		<result column="ORDER_NO" property="orderNo"/>
+		<result column="TARGET_TYPE" property="targetType"/>
+		<result column="TITLE" property="title"/>
+		<result column="PLACE" property="place"/>
+		<result column="CONTENT" property="content"/>
+		<result column="USER_UID" property="userUid"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="PHOTO_URL" property="photoUrl"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+	</resultMap>
+	
+	<select id="selectMaxNo" resultType="int">
+		SELECT COALESCE(MAX(BOARD_ROUTE_NO), 0)
+		FROM BOARD_ROUTE_TB
+	</select>
+	
+	<insert id="insertRoute" parameterType="BoardRouteVO">
+		INSERT INTO BOARD_ROUTE_TB (BOARD_ROUTE_NO, ORDER_NO, TITLE, PLACE, CONTENT, USER_UID)
+		VALUES (#{boardRouteNo}, #{orderNo}, #{title}, #{place}, #{content}, #{userUid})
+	</insert>
+	
+	<select id="selectRouteListByNo" parameterType="hashMap" resultMap="BoardRouteMap">
+		SELECT BR.BOARD_ROUTE_NO, BR.TARGET_TYPE, BR.TITLE, BR.USER_UID, BR.REG_DATE, U.DISPLAY_NAME, U.PHOTO_URL
+		FROM BOARD_ROUTE_TB BR, USER_TB U
+		WHERE BR.USER_UID = U.USER_UID
+		GROUP BY BR.BOARD_ROUTE_NO
+		ORDER BY BR.REG_DATE DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="selectRouteDetailByNo" parameterType="int" resultMap="BoardRouteMap">
+		SELECT *
+		FROM BOARD_ROUTE_TB
+		WHERE BOARD_ROUTE_NO = #{boardRouteNo}
+		ORDER BY ORDER_NO
+	</select>
+	
+	<select id="countAllRouteList" resultType="int">
+		SELECT COUNT(DISTINCT BOARD_ROUTE_NO)
+		FROM BOARD_ROUTE_TB
+	</select>
+	
+</mapper>

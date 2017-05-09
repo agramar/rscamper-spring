@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+.parallax-quote:after {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.parallax-quote {
+	background-size: 100% 50%;
+}
+
+#profile_image {
+	width: 100px;
+	height: 100px;
+	color: #3b3b3b;
+/* 	padding: 3px; */
+/* 	border: solid 1px #ccc; */
+}

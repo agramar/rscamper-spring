@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.TrainMapper">
+<!-- id = class명Map 으로 -->
+ <resultMap type="TrainVO" id="trainMap">
+	<result property="stationNo" column="STATION_NO"/>
+	<result property="stationTitle" column="STATION_TITLE"/>
+	<result property="trainId" column="TRAIN_ID"/>
+	<result property="stationVital" column="STATION_VITAL"/>
+	<result property="trainSaemaeul" column="TRAIN_SAEMAEUL"/>
+	<result property="trainMugunghwa" column="TRAIN_MUGUNGHWA"/>
+	<result property="trainTonggeun" column="TRAIN_TONGGEUN"/>
+	<result property="trainNuriro" column="TRAIN_NURIRO"/>
+	<result property="trainItxchungchun" column="TRAIN_ITXCHUNGCHUN"/>
+	<result property="trainItxsaemaeul" column="TRAIN_ITXSAEMAEUL"/>
+</resultMap> 
+
+<!-- 전체 조회 -->
+<select id="list" resultMap="trainMap">
+	select	*
+		
+	from
+			train_tb
+</select>
+
+<!-- 메인 전체 조회 -->
+<select id="trainselectList" resultMap="trainMap" parameterType="string">
+	select *
+	
+	from train_tb
+
+</select>
+ 
+<select id="searchList" parameterType="java.util.List" resultType="TrainVO">
+select station_title as stationTitle, train_saemaeul as trainSaemaeul, train_mugunghwa as trainMugunghwa, train_tonggeun as trainTonggeun,
+		train_nuriro as trainNuriro, train_itxchungchun as trainItxchungchun, train_itxsaemaeul as trainItxsaemaeul
+from train_tb
+where 
+<foreach collection="list" item="item" index="index" separator="and">
+		<choose>
+			<when test='item == "ㄱ"'>
+				substr(station_title,#{index}+1,1) &gt;= '가' and substr(station_title,#{index}+1,1) &lt; '나'
+			</when>
+			<when test='item == "ㄴ"'>
+				substr(station_title,#{index}+1,1) &gt;= '나' and substr(station_title,#{index}+1,1) &lt; '다'
+			</when>
+			<when test='item == "ㄷ"'>
+				substr(station_title,#{index}+1,1) &gt;= '다' and substr(station_title,#{index}+1,1) &lt; '라'
+			</when>
+			<when test='item == "ㄹ"'>
+				substr(station_title,#{index}+1,1) &gt;= '라' and substr(station_title,#{index}+1,1) &lt; '마'
+			</when>
+			<when test='item == "ㅁ"'>
+				substr(station_title,#{index}+1,1) &gt;= '마' and substr(station_title,#{index}+1,1) &lt; '바'
+			</when>
+			<when test='item == "ㅂ"'>
+				substr(station_title,#{index}+1,1) &gt;= '바' and substr(station_title,#{index}+1,1) &lt; '사'
+			</when>
+			<when test='item == "ㅅ"'>
+				substr(station_title,#{index}+1,1) &gt;= '사' and substr(station_title,#{index}+1,1) &lt; '아'
+			</when>
+			<when test='item == "ㅇ"'>
+				substr(station_title,#{index}+1,1) &gt;= '아' and substr(station_title,#{index}+1,1) &lt; '자'
+			</when>
+			<when test='item == "ㅈ"'>
+				substr(station_title,#{index}+1,1) &gt;= '자' and substr(station_title,#{index}+1,1) &lt; '차'
+			</when>
+			<when test='item == "ㅊ"'>
+				substr(station_title,#{index}+1,1) &gt;= '차' and substr(station_title,#{index}+1,1) &lt; '카'
+			</when>
+			<when test='item == "ㅋ"'>
+				substr(station_title,#{index}+1,1) &gt;= '카' and substr(station_title,#{index}+1,1) &lt; '타'
+			</when>
+			<when test='item == "ㅌ"'>
+				substr(station_title,#{index}+1,1) &gt;= '타' and substr(station_title,#{index}+1,1) &lt; '파'
+			</when>
+			<when test='item == "ㅍ"'>
+				substr(station_title,#{index}+1,1) &gt;= '파' and substr(station_title,#{index}+1,1) &lt; '하'
+			</when>
+			<when test='item == "ㅎ"'>
+				substr(station_title,#{index}+1,1) &gt;= '하' and substr(station_title,#{index}+1,1) &lt; '힣'
+			</when>
+		</choose>
+		</foreach>
+
+</select>
+
+</mapper>

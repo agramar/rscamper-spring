@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.rscamper.TourSchedule">
+	<resultMap type="TourScheduleVO" id="scheduleMap">
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+		<result property="arriveDate" column="ARRIVE_DATE"/>
+		<result property="title" column="TITLE"/>
+		<result property="budGet" column="BUDGET"/>
+		<result property="picture" column="PICTURE"/>
+		<result property="period" column="PERIOD" />
+		<result property="strapline" column="STRAPLINE"/>
+		<result property="introduce" column="INTRODUCE"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="isOpen" column="ISOPEN" />
+		<result property="likeCnt" column="LIKE_CNT" />
+		<result property="commentCnt" column="COMMENT_CNT" />
+		<result property="totalPrice" column="TOTAL_PRICE" />
+	</resultMap>
+	
+	<resultMap type="RecordCoverVO" id="RecordCoverMap">
+		<result property="coverNo" column="COVER_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="realPath" column="REAL_PATH"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="oriName" column="ORI_NAME"/>
+		<result property="fileName" column="FILE_NAME"/>
+	</resultMap>
+	
+	<resultMap type="RecordLocationVO" id="RecordLocationMap">
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="contentCode" column="CONTENT_CODE"/>
+		<result property="imageUrl" column="IMAGE_URL"/>
+		<result property="detailDepartureDate" column="DETAIL_DEPARTURE_DATE"/>
+		<result property="contentTypeId" column="CONTENT_TYPE_ID"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+	</resultMap>
+	
+	<resultMap type="TourSchedulePlanVO" id="tourPlanMap">
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+		<result property="arriveDate" column="ARRIVE_DATE"/>
+		<result property="title" column="TITLE"/>
+		<result property="budGet" column="BUDGET"/>
+		<result property="picture" column="PICTURE"/>
+		<result property="period" column="PERIOD" />
+		<result property="strapline" column="STRAPLINE"/>
+		<result property="introduce" column="INTRODUCE"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="isOpen" column="ISOPEN" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="photoUrl" column="PHOTO_URL" />
+		<result property="likeCnt" column="LIKE_CNT" />
+		<result property="commentCnt" column="COMMENT_CNT" />
+		<result property="totalPrice" column="TOTAL_PRICE"/>
+	</resultMap>
+	
+	<resultMap type="ScheduleLikeVO" id="scheduleLikeMap">
+		<result property="recordNo" column="RECORD_NO" />
+		<result property="userUid" column="USER_UID" />
+		<result property="afterRecordNo" column="AFTER_RECORD_NO" />
+	</resultMap>
+	
+	<resultMap type="BoardBookMarkVO" id="boardBookMarkMap">
+		<result property="targetNo" column="TARGETNO" />
+		<result property="userUid" column="USER_UID" />
+		<result property="targetType" column="TARGET_TYPE" />
+	</resultMap>
+	
+	<resultMap type="ScheduleListCommentVO" id="scheduleListCommentMap">
+		<result property="userUid" column="USER_UID" />
+		<result property="commentNo" column="COMMENT_NO" />
+		<result property="recordNo" column="RECORD_NO" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="photoUrl" column="PHOTO_URL" />
+	</resultMap>
+	
+	<resultMap type="ScheduleMemoVO" id="scheduleMemoMap">
+		<result property="scheduleMemoNo" column="SCHEDULEMEMO_NO"/>
+		<result property="recordNo" column="RECORD_NO" />
+		<result property="userUid" column="USER_UID" />
+		<result property="contentId" column="CONTENTID" />
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="memoType" column="MEMO_TYPE" />
+		<result property="locationTitle" column="LOCATION_TITLE" />
+		<result property="recordTitle" column="RECORD_TITLE" />
+		<result property="commentCnt" column="COMMENT_CNT"/>
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="photoUrl" column="PHOTO_URL" />
+		<result property="likeCnt" column="LIKE_CNT"/>
+		<result property="isLike" column="ISLIKE"/>
+		<result property="memoCnt" column="MEMO_CNT"/>
+		<result property="locationNo" column="LOCATION_NO"/>
+	</resultMap>
+	
+	<resultMap type="ScheduleMemoCommentVO" id="scheduleMemoCommentMap">
+		<result property="scheduleMemoNo" column="SCHEDULEMEMO_NO"/>
+		<result property="commentNo" column="COMMENT_NO" />
+		<result property="userUid" column="USER_UID" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="photoUrl" column="PHOTO_URL" />
+	</resultMap>
+	
+	<resultMap type="ScheduleMemoLikeVO" id="scheduleMemoLikeMap">
+		<result property="scheduleMemoNo" column="SCHEDULEMEMO_NO"/>
+		<result property="userUid" column="USER_UID" />
+	</resultMap>
+	
+	<resultMap type="LocationLikedVO" id="locationLikedMap">
+		<result property="contentId" column="CONTENT_CODE"/>
+		<result property="uid" column="USER_UID"/>
+		<result property="postCnt" column="POST_CNT"/>
+		<result property="likeCnt" column="LIKE_CNT"/>
+		<result property="backLikeCnt" column="BACK_LIKE_CNT"/>
+	</resultMap>
+	
+	<resultMap type="LocationCommentVO" id="LocationCommentMap">
+		<result property="tourCommentNo" column="TOUR_COMMENT_NO"/>
+		<result property="contentId" column="CONTENT_ID"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="displayName" column="DISPLAY_NAME" />
+		<result property="photoUrl" column="PHOTO_URL" />
+	</resultMap>
+	
+	<resultMap type="TravelPriceVO" id="TravelPriceMap">
+		<result property="travelPriceNo" column="TRAVELPRICE_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="contentId" column="CONTENTID"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="content" column="CONTENT" />
+		<result property="travelPrice" column="TRAVEL_PRICE"/>
+		<result property="priceType" column="PRICE_TYPE"/>
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="scheduleMemoNo" column="SCHEDULEMEMO_NO"/>
+	</resultMap>
+	
+	<select id="getSchedule" parameterType="string" resultMap="scheduleMap">
+		SELECT *, COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = r.RECORD_NO), 0) LIKE_CNT,
+		          COALESCE((SELECT COUNT(*) FROM RECORD_COMMENT_TB RC WHERE RC.RECORD_NO = R.RECORD_NO), 0) COMMENT_CNT,
+		          COALESCE((SELECT SUM(TRAVEL_PRICE) FROM RECORD_TRAVELPRICE_TB RT WHERE RT.RECORD_NO = R.RECORD_NO),0) AS TOTAL_PRICE 
+		  FROM RECORD_TB R
+		 WHERE USER_UID = #{uid}
+		 ORDER BY R.REG_DATE DESC
+	</select>
+	
+	<insert id="insertSchedule" parameterType="TourScheduleVO">
+		insert into record_tb(USER_UID,DEPARTURE_DATE,ARRIVE_DATE,TITLE,PICTURE,PERIOD,ISOPEN)
+		values (#{userUid},#{departureDate},#{arriveDate},#{title},0,#{period},#{isOpen}) 
+	</insert>
+	
+	<delete id="delSchedule" parameterType="int">
+		delete
+		  from record_tb
+		 where RECORD_NO = #{no}
+	</delete>
+	<delete id="delCover" parameterType="int">
+		delete
+		  from record_cover_tb
+		 where RECORD_NO = #{no}
+	</delete>
+	<update id="changeCover" parameterType="RecordCoverVO">
+		update record_cover_tb
+		   set FILE_PATH = #{filePath}
+		 where RECORD_NO = #{recordNo} 
+	</update>
+	<insert id="insertCover" parameterType="RecordCoverVO">
+		insert into record_cover_tb(RECORD_NO, FILE_PATH)
+		values (#{recordNo},#{filePath})
+	</insert>
+	<select id="getCover" parameterType="int" resultMap="RecordCoverMap">
+		select *
+		  from record_cover_tb
+		 where RECORD_NO = #{no} 
+	</select>
+	<update id="updateCover" parameterType="int">
+		update record_tb
+		   set picture = 1
+		 where RECORD_NO = #{no}
+	</update>
+	<select id="getDetailTourSchedule" parameterType="int" resultMap="scheduleMap">
+		SELECT *, COALESCE((SELECT SUM(TRAVEL_PRICE) FROM RECORD_TRAVELPRICE_TB RT WHERE RT.RECORD_NO = R.RECORD_NO AND RECORD_NO = #{no}),0) AS TOTAL_PRICE
+  		  FROM RECORD_TB R
+         WHERE R.RECORD_NO = #{no};
+	</select>
+	<update id="updateStrapline" parameterType="TourScheduleVO">
+		update record_tb
+		   set STRAPLINE = #{strapline},
+		       INTRODUCE = #{introduce}
+		 where RECORD_NO = #{recordNo}
+	</update>
+	<insert id="addScheduleLocation" parameterType="RecordLocationVO">
+		insert into record_location_tb(RECORD_NO,TITLE,CONTENT_CODE,IMAGE_URL, DETAIL_DEPARTURE_DATE, CONTENT_TYPE_ID, DEPARTURE_DATE, MAPX, MAPY)
+		values(#{recordNo},#{title},#{contentCode},#{imageUrl},#{detailDepartureDate},#{contentTypeId},#{departureDate},#{mapX},#{mapY})
+	</insert>
+	<select id="getScheduleLocation" parameterType="int" resultMap="RecordLocationMap">
+		select *
+		  from record_location_tb
+		 where RECORD_NO = #{no}
+		 order by DETAIL_DEPARTURE_DATE
+	</select>
+	<select id="locationLikeCount" parameterType="int" resultType="int">
+		select count(CONTENT_CODE)
+		  from record_location_liked_tb
+		 where CONTENT_CODE = #{code}
+	</select>
+	<insert id="insertLikePlus" parameterType="LocationLikedVO">
+		insert into record_location_liked_tb
+		values (#{contentId},#{uid})
+	</insert>
+	<select id="checkedIsLike" parameterType="LocationLikedVO" resultType="LocationLikedVO">
+		select CONTENT_CODE as contentId, USER_UID as uid
+		  from record_location_liked_tb
+		 where CONTENT_CODE = #{contentId}
+		   and USER_UID = #{uid}
+	</select>
+	<delete id="removeLiked" parameterType="LocationLikedVO">
+		delete 
+		  from record_location_liked_tb
+		 where CONTENT_CODE = #{contentId}
+		   and USER_UID = #{uid}
+	</delete>
+	<delete id="delLocation" parameterType="int">
+		delete 
+		  from record_location_tb
+		 where LOCATION_NO = #{locationNo} 
+	</delete>
+	<delete id="delScheduleLocation" parameterType="int">
+		delete 
+		  from record_location_tb
+		 where RECORD_NO = #{no} 
+	</delete>
+	<select id="allScheduleList" parameterType="hashMap" resultMap="tourPlanMap">
+		select r.record_no,r.user_uid,r.departure_date,r.arrive_date,r.title,r.budget,r.picture,r.period,r.strapline,r.introduce,r.reg_date,r.isopen,u.photo_url,u.display_name, COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = r.RECORD_NO), 0) LIKE_CNT,
+		          COALESCE((SELECT COUNT(*) FROM RECORD_COMMENT_TB RC WHERE RC.RECORD_NO = R.RECORD_NO), 0) COMMENT_CNT
+          from user_tb u, record_tb r
+         where ISOPEN = 1
+           and u.user_uid = r.user_uid
+         order by LIKE_CNT desc, r.reg_date desc
+         LIMIT #{page}, #{count}
+	</select>
+	<select id="allScheduleListDate" parameterType="hashMap" resultMap="tourPlanMap">
+		select r.record_no,r.user_uid,r.departure_date,r.arrive_date,r.title,r.budget,r.picture,r.period,r.strapline,r.introduce,r.reg_date,r.isopen,u.photo_url,u.display_name, COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = r.RECORD_NO), 0) LIKE_CNT,
+		          COALESCE((SELECT COUNT(*) FROM RECORD_COMMENT_TB RC WHERE RC.RECORD_NO = R.RECORD_NO), 0) COMMENT_CNT
+          from user_tb u, record_tb r
+         where ISOPEN = 1
+           and u.user_uid = r.user_uid
+         order by r.reg_date desc
+         LIMIT #{page}, #{count}
+	</select>
+	<select id="allScheduleListDay" parameterType="hashMap" resultMap="tourPlanMap">
+		select r.record_no,r.user_uid,r.departure_date,r.arrive_date,r.title,r.budget,r.picture,r.period,r.strapline,r.introduce,r.reg_date,r.isopen,u.photo_url,u.display_name, COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = r.RECORD_NO), 0) LIKE_CNT,
+		          COALESCE((SELECT COUNT(*) FROM RECORD_COMMENT_TB RC WHERE RC.RECORD_NO = R.RECORD_NO), 0) COMMENT_CNT
+          from user_tb u, record_tb r
+         where ISOPEN = 1
+           and u.user_uid = r.user_uid
+           and date(r.reg_date) &gt;= date(subdate(now(), INTERVAL #{day} DAY))
+           and date(r.reg_date) &lt;= date(now())
+         order by r.reg_date desc
+         LIMIT #{page}, #{count}
+	</select>
+	<select id="selectScheduleCount" resultType="int">
+		select count(record_no)
+          from user_tb u, record_tb r
+         where ISOPEN = 1
+           and u.user_uid = r.user_uid
+	</select>
+	<insert id="addScheduleLike" parameterType="ScheduleLikeVO">
+		insert into record_like_tb(user_uid, record_no)
+		values (#{userUid},#{recordNo})
+	</insert>
+	<select id="getScheduleLikeCount" resultType="int">
+		select count(*)
+		  from record_like_tb
+		 where record_no = #{recordNo}
+	</select>
+	<select id="checkScheduleLike" parameterType="ScheduleLikeVO" resultMap="scheduleLikeMap">
+		select record_no, user_uid
+		  from record_like_tb
+		 where record_no = #{recordNo}
+		   and user_uid = #{userUid}
+	</select>
+	<delete id="cancelScheduleLike" parameterType="ScheduleLikeVO">
+		delete
+		  from record_like_tb
+		 where record_no = #{recordNo}
+		   and user_uid = #{userUid} 
+	</delete>
+	<insert id="addCustomizing" parameterType="TourScheduleVO">
+		insert into record_tb(USER_UID,DEPARTURE_DATE,ARRIVE_DATE,TITLE,BUDGET,PICTURE,PERIOD,ISOPEN)
+		values (#{userUid},#{departureDate},#{arriveDate},#{title},#{budGet},0,#{period},#{isOpen}) 
+		
+		<selectKey keyProperty="recordNo" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	
+	<insert id="addCustomizingLike" parameterType="ScheduleLikeVO">
+		insert into record_customizing_tb(user_uid, record_no, after_record_no)
+		values (#{userUid},#{recordNo},#{afterRecordNo})
+	</insert>
+	<select id="getCustomizingLikeCount" resultType="int">
+		select count(*)
+		  from record_customizing_tb
+		 where record_no = #{recordNo}
+	</select>
+	<select id="checkCustomizingLike" parameterType="ScheduleLikeVO" resultMap="scheduleLikeMap">
+		select record_no, user_uid, after_record_no
+		  from record_customizing_tb
+		 where record_no = #{recordNo}
+		   and user_uid = #{userUid}
+	</select>
+	<delete id="cancelCustomizingLike" parameterType="ScheduleLikeVO">
+		delete
+		  from record_customizing_tb
+		 where record_no = #{recordNo}
+		   and user_uid = #{userUid} 
+	</delete>
+	
+	<insert id="addScheduleBookmark" parameterType="BoardBookMarkVO">
+		insert into board_bookmark_tb(target_no, user_uid, target_type)
+		values (#{targetNo},#{userUid},#{targetType})
+	</insert>
+	<select id="getScheduleBookMarkCount" parameterType="BoardBookMarkVO" resultType="int">
+		select count(*)
+		  from board_bookmark_tb
+		 where target_no = #{targetNo}
+		   and target_type = #{targetType}
+	</select>
+	<delete id="cancelScheduleBookMark" parameterType="BoardBookMarkVO">
+		delete
+		  from board_bookmark_tb
+		 where target_no = #{targetNo}
+		   and target_type = #{targetType}
+		   and user_uid = #{userUid} 
+	</delete>
+	<select id="checkScheduleBookMark" parameterType="BoardBookMarkVO" resultMap="boardBookMarkMap">
+		select target_no, user_uid, target_type
+		  from board_bookmark_tb
+		 where target_no = #{targetNo}
+		   and target_type = #{targetType}
+		   and user_uid = #{userUid}
+	</select>
+	<select id="scheduleListDetail" parameterType="int" resultMap="tourPlanMap">
+		select r.record_no,r.user_uid,r.departure_date,r.arrive_date,r.title,r.budget,r.picture,r.period,r.strapline,r.introduce,r.reg_date,r.isopen,u.photo_url,u.display_name, COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = r.RECORD_NO), 0) LIKE_CNT,
+		          COALESCE((SELECT COUNT(*) FROM RECORD_COMMENT_TB RC WHERE RC.RECORD_NO = R.RECORD_NO), 0) COMMENT_CNT,
+		          COALESCE((SELECT SUM(TRAVEL_PRICE) FROM RECORD_TRAVELPRICE_TB RT WHERE RT.RECORD_NO = #{no}),0) TOTAL_PRICE
+	      from user_tb u, record_tb r
+	     where ISOPEN = 1
+	       and u.user_uid = r.user_uid
+	       and record_no = #{no}
+	</select>
+	<insert id="insertScheduleListComment" parameterType="ScheduleListCommentVO">
+		insert into record_comment_tb(RECORD_NO, USER_UID, CONTENT)
+		values (#{recordNo}, #{userUid}, #{content})
+	</insert>
+	<select id="getScheduleListComment" parameterType="int" resultMap="scheduleListCommentMap">
+		select *, COALESCE((select PHOTO_URL from user_tb u where u.user_uid = c.user_uid), 0) PHOTO_URL,
+                  COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = c.user_uid), 0) DISPLAY_NAME
+          from record_comment_tb c
+		 where RECORD_NO = #{recordNo}
+		 order by comment_no desc
+	</select>
+	<delete id="delScheduleListComment" parameterType="int">
+		DELETE
+		  FROM RECORD_COMMENT_TB
+		 WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	<insert id="addScheduleMemo" parameterType="ScheduleMemoVO">
+		insert into record_scheduleMemo_tb(RECORD_NO, USER_UID, TITLE, CONTENT, CONTENTID, MEMO_TYPE, LOCATION_NO)
+		values (#{recordNo}, #{userUid}, #{title}, #{content}, #{contentId}, #{memoType}, #{locationNo})
+		<selectKey keyProperty="scheduleMemoNo" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<select id="getScheduleMemo" parameterType="ScheduleMemoVO" resultMap="scheduleMemoMap">
+		select *,(select title from record_location_tb rl where rl.content_code = rs.contentid  and rl.location_no = rs.location_no) LOCATION_TITLE,
+                 (select title from record_tb r where r.record_no = rs.record_no) RECORD_TITLE,
+                 (select count(*) from record_scheduleMemo_comment_tb rsc where rs.scheduleMemo_no = rsc.scheduleMemo_no) COMMENT_CNT,
+                 COALESCE((select PHOTO_URL from user_tb u where u.user_uid = rs.user_uid), 0) PHOTO_URL,
+                 COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = rs.user_uid), 0) DISPLAY_NAME,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO),0) LIKE_CNT,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO and rsl.USER_UID = #{userUid}),0) ISLIKE
+          from record_scheduleMemo_tb rs
+		 where rs.record_No = #{recordNo}
+	</select>
+	<select id="getMyPost" parameterType="string" resultMap="scheduleMemoMap">
+		select *,(select title from record_location_tb rl where rl.content_code = rs.contentid and rl.location_no = rs.location_no) LOCATION_TITLE,
+                 (select title from record_tb r where r.record_no = rs.record_no) RECORD_TITLE,
+                 (select count(*) from record_scheduleMemo_comment_tb rsc where rs.scheduleMemo_no = rsc.scheduleMemo_no) COMMENT_CNT,
+                 COALESCE((select PHOTO_URL from user_tb u where u.user_uid = rs.user_uid), 0) PHOTO_URL,
+                 COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = rs.user_uid), 0) DISPLAY_NAME,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO),0) LIKE_CNT,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO and rsl.USER_UID = #{userUid}),0) ISLIKE
+          from record_scheduleMemo_tb rs
+		 where rs.USER_UID = #{userUid}
+	</select>
+	<select id="getDetailPost" parameterType="ScheduleMemoVO" resultMap="scheduleMemoMap">
+		select *,(select title from record_location_tb rl where rl.content_code = rs.contentid  and rl.location_no = rs.location_no) LOCATION_TITLE,
+                 (select title from record_tb r where r.record_no = rs.record_no) RECORD_TITLE,
+                 (select count(*) from record_scheduleMemo_comment_tb rsc where rs.scheduleMemo_no = rsc.scheduleMemo_no) COMMENT_CNT,
+                 COALESCE((select PHOTO_URL from user_tb u where u.user_uid = rs.user_uid), 0) PHOTO_URL,
+                 COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = rs.user_uid), 0) DISPLAY_NAME,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO),0) LIKE_CNT,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO and rsl.USER_UID = #{userUid}),0) ISLIKE
+          from record_scheduleMemo_tb rs
+		 where rs.SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</select>
+	<insert id="insertMemoComment" parameterType="ScheduleMemoCommentVO">
+		insert into record_scheduleMemo_comment_tb(SCHEDULEMEMO_NO, USER_UID, CONTENT)
+		values(#{scheduleMemoNo}, #{userUid}, #{content})
+	</insert>
+	<select id="getMemoComment" parameterType="int" resultMap="scheduleMemoCommentMap">
+		select *, COALESCE((select PHOTO_URL from user_tb u where u.user_uid = c.user_uid), 0) PHOTO_URL,
+                  COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = c.user_uid), 0) DISPLAY_NAME
+          from record_scheduleMemo_comment_tb c
+		 where SCHEDULEMEMO_NO = #{postNo}
+		 order by COMMENT_NO desc
+	</select>
+	<insert id="addScheduleMemoLike" parameterType="ScheduleMemoLikeVO">
+		insert into record_scheduleMemo_like_tb(SCHEDULEMEMO_NO, USER_UID)
+		values(#{scheduleMemoNo}, #{userUid})
+	</insert>
+	<select id="getScheduleMemoLikeCnt" parameterType="int" resultType="int">
+		select count(*)
+		  from record_scheduleMemo_like_tb
+		 where SCHEDULEMEMO_NO = #{commentNo}
+	</select>
+	<delete id="cancelScheduleMemoLike" parameterType="ScheduleMemoLikeVO">
+		delete
+		  from record_scheduleMemo_like_tb
+		 where SCHEDULEMEMO_NO = #{scheduleMemoNo}
+		   and USER_UID = #{userUid}
+	</delete>
+	<delete id="delMemoComment" parameterType="int">
+		delete
+		  from record_scheduleMemo_comment_tb
+		 where COMMENT_NO = #{commentNo}
+	</delete>
+	<delete id="delScheduleMemo" parameterType="int">
+		delete
+		  from record_scheduleMemo_tb
+		 where SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	<delete id="delScheduleMemoComment" parameterType="int">
+		delete
+		  from record_scheduleMemo_comment_tb
+		 where SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	<delete id="delScheduleMemolike" parameterType="int">
+		delete
+		  from record_scheduleMemo_like_tb
+		 where SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	<select id="getWishBoardList" parameterType="String" resultMap="locationLikedMap">
+		select *, COALESCE((select count(*) from record_schedulememo_tb rs where rs.contentId = rl.content_Code),0) post_cnt,
+		          COALESCE((select count(*) from record_location_liked_tb rll where rl.content_code = rll.content_code),0) like_cnt,
+		          COALESCE((select count(*) from RECORD_BACKLOCATIONLIKE_TB rb where rl.content_code = rb.content_code),0) BACK_LIKE_CNT
+          from record_location_liked_tb rl
+         where USER_UID = #{userUid}
+         order by like_cnt desc
+	</select>
+	
+	<select id="getLocationMemo" parameterType="int" resultMap="scheduleMemoMap">
+		SELECT *,(SELECT TITLE FROM RECORD_LOCATION_TB RL WHERE RL.CONTENT_CODE = RS.CONTENTID) LOCATION_TITLE,
+                 (SELECT TITLE FROM RECORD_TB R WHERE R.RECORD_NO = RS.RECORD_NO) RECORD_TITLE,
+                 (SELECT COUNT(*) FROM RECORD_SCHEDULEMEMO_COMMENT_TB RSC WHERE RS.SCHEDULEMEMO_NO = RSC.SCHEDULEMEMO_NO) COMMENT_CNT,
+                 COALESCE((SELECT PHOTO_URL FROM USER_TB U WHERE U.USER_UID = RS.USER_UID), 0) PHOTO_URL,
+                 COALESCE((SELECT DISPLAY_NAME FROM USER_TB U WHERE U.USER_UID = RS.USER_UID), 0) DISPLAY_NAME,
+                 COALESCE((SELECT COUNT(*) FROM RECORD_SCHEDULEMEMO_LIKE_TB RSL WHERE RSL.SCHEDULEMEMO_NO = RS.SCHEDULEMEMO_NO),0) LIKE_CNT,
+                 COALESCE((SELECT COUNT(*) FROM RECORD_SCHEDULEMEMO_LIKE_TB RSL WHERE RSL.SCHEDULEMEMO_NO = RS.SCHEDULEMEMO_NO),0) ISLIKE
+          FROM RECORD_SCHEDULEMEMO_TB RS
+		 WHERE rs.CONTENTID = #{contentId}
+		 ORDER BY LIKE_CNT DESC
+	</select>
+	<select id="getLocationMemoCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM RECORD_SCHEDULEMEMO_TB
+		 WHERE CONTENTID = #{contentId}
+	</select>
+	<select id="getBackLocationLikeCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		  FROM RECORD_BACKLOCATIONLIKE_TB
+		 WHERE CONTENT_CODE = #{contentId}
+	</select>
+	<insert id="addBackLocationLike" parameterType="LocationLikedVO">
+		INSERT INTO RECORD_BACKLOCATIONLIKE_TB(CONTENT_CODE,USER_UID)
+		VALUES(#{contentId},#{uid})
+	</insert>
+	<delete id="delBackLocationLike" parameterType="LocationLikedVO">
+		DELETE
+		  FROM RECORD_BACKLOCATIONLIKE_TB
+		 WHERE CONTENT_CODE = #{contentId}
+		   AND USER_UID = #{uid}
+	</delete>
+	<select id="checkBackLocationLike" parameterType="LocationLikedVO" resultType="LocationLikedVO">
+		SELECT CONTENT_CODE as contentId, USER_UID as uid
+		  FROM RECORD_BACKLOCATIONLIKE_TB
+		 WHERE CONTENT_CODE = #{contentId}
+		   AND USER_UID = #{uid}
+	</select>
+	<select id="getLocationComment" parameterType="int" resultMap="LocationCommentMap">
+		SELECT *, COALESCE((SELECT PHOTO_URL FROM USER_TB U WHERE U.USER_UID = C.USER_UID), 0) PHOTO_URL,
+                  COALESCE((SELECT DISPLAY_NAME FROM USER_TB U WHERE U.USER_UID = C.USER_UID), 0) DISPLAY_NAME
+          FROM TOUR_COMMENT_TB C
+		 WHERE CONTENT_ID = #{contentId}
+		 ORDER BY REG_DATE DESC
+	</select>
+	<insert id="addLocationComment" parameterType="LocationLikedVO">
+		INSERT INTO TOUR_COMMENT_TB(CONTENT_ID, USER_UID, CONTENT)
+		values(#{contentId}, #{userUid}, #{content})
+	</insert>
+	<insert id="addTravelPrice" parameterType="TravelPriceVO">
+		insert into record_travelPrice_tb(RECORD_NO, CONTENTID, USER_UID, CONTENT, TRAVEL_PRICE, PRICE_TYPE, LOCATION_NO, SCHEDULEMEMO_NO)
+		values (#{recordNo}, #{contentId}, #{userUid}, #{content}, #{travelPrice}, #{priceType}, #{locationNo}, #{scheduleMemoNo})
+	</insert>
+	<select id="getLocationTravelPrice" parameterType="int" resultMap="TravelPriceMap">
+		SELECT * 
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE LOCATION_NO = #{locationNo}
+	</select>
+	<select id="getScheduleTravelPrice" parameterType="int" resultMap="TravelPriceMap">
+		SELECT * 
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE RECORD_NO = #{recordNo}
+	</select>
+	<select id="getMemoTravelPrice" parameterType="int" resultMap="TravelPriceMap">
+		SELECT * 
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</select>
+	<delete id="delMemoPrice" parameterType="int">
+		DELETE
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	<delete id="delLocationPrice" parameterType="int">
+		DELETE
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE LOCATION_NO = #{locationNo}
+	</delete>
+	<delete id="delLocationMemo" parameterType="int">
+		DELETE
+		  FROM RECORD_SCHEDULEMEMO_TB
+		 WHERE LOCATION_NO = #{locationNo}
+	</delete>
+	<delete id="delScheduleAllMemo" parameterType="int">
+		DELETE
+		  FROM RECORD_SCHEDULEMEMO_TB
+		 WHERE RECORD_NO = #{no}
+	</delete>
+	<delete id="delSchedulePrice" parameterType="int">
+		DELETE
+		  FROM RECORD_TRAVELPRICE_TB
+		 WHERE RECORD_NO = #{no}
+	</delete>
+	<select id="addWishBoardReview" parameterType="int" resultMap="scheduleMemoMap">
+		select *,(select title from record_location_tb rl where rl.content_code = rs.contentid) LOCATION_TITLE,
+                 (select title from record_tb r where r.record_no = rs.record_no) RECORD_TITLE,
+                 (select count(*) from record_scheduleMemo_comment_tb rsc where rs.scheduleMemo_no = rsc.scheduleMemo_no) COMMENT_CNT,
+                 COALESCE((select PHOTO_URL from user_tb u where u.user_uid = rs.user_uid), 0) PHOTO_URL,
+                 COALESCE((select DISPLAY_NAME from user_tb u where u.user_uid = rs.user_uid), 0) DISPLAY_NAME,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO),0) LIKE_CNT,
+                 COALESCE((select count(*) from record_scheduleMemo_like_tb rsl where rsl.SCHEDULEMEMO_NO = rs.SCHEDULEMEMO_NO),0) ISLIKE
+          from record_scheduleMemo_tb rs
+		 where rs.contentid = #{contentId}
+	</select>
+	<update id="updateScheduleSameDate" parameterType="TourScheduleVO">
+		UPDATE RECORD_TB
+		   SET TITLE = #{title},
+		       ISOPEN = #{isOpen}
+		 WHERE RECORD_NO = #{recordNo}
+	</update>
+	<update id="updateScheduleDifferentDate" parameterType="TourScheduleVO">
+		UPDATE RECORD_TB
+		   SET TITLE = #{title},
+		       ISOPEN = #{isOpen},
+		       DEPARTURE_DATE = #{departureDate},
+		       ARRIVE_DATE = #{arriveDate}
+		 WHERE RECORD_NO = #{recordNo}
+	</update>
+	<select id="getLocationCnt" parameterType="int" resultMap="locationLikedMap">
+		select count(*) LIKE_CNT, COALESCE((select count(*) from record_schedulememo_tb rs where rs.contentId = rl.content_Code),0) POST_CNT,
+		          COALESCE((select count(*) from RECORD_BACKLOCATIONLIKE_TB rb where rl.content_code = rb.content_code),0) BACK_LIKE_CNT
+          from record_location_liked_tb rl
+         where CONTENT_CODE = #{contentId}
+         order by like_cnt desc
+	</select>
+</mapper>

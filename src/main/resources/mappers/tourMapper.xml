@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.TourMapper">
+	<resultMap type="TourCommentVO" id="TourCommentVOMap">
+		<result column="CONTENT_ID" property="contentid" />
+		<result column="CONTENT" property="content" />
+		<result column="REG_DATE" property="regDate" />
+		
+		<result column="USER_UID" property="userUid" />
+		<result column="PHOTO_URL" property="photoUrl" />
+		<result column="DISPLAY_NAME" property="displayName" />
+		<result column="PROVIDER_UID" property="providerUid" />
+		<result column="PROVIDER_NAME" property="providerName" />
+		<result column="PROVIDER_DISPLAY_NAME" property="providerDisplayName" />
+		<result column="PROVIDER_PHOTO_URL" property="providerPhotoUrl" />
+		<result column="PROVIDER_EMAIL" property="providerEmail" />
+		<result column="BGPHOTO_URL" property="bgPhotoUrl" />
+		<result column="PHONE_NUMBER" property="phoneNumber" />
+		<result column="WEBSITE_URL" property="websiteUrl" />
+		
+		<result column="COMMENT_CNT" property="commentCnt"/>
+		<result column="LIKE_CNT" property="likeCnt"/>
+	</resultMap>
+
+
+	<select id="commentList" parameterType="int" resultMap="TourCommentVOMap">
+		SELECT TOUR_COMMENT_NO as tourCommentNo, CONTENT_ID as  contentid, USER_UID as userUid, CONTENT as content, REG_DATE as regDate
+		FROM 
+			tour_comment_tb
+		WHERE CONTENT_ID = #{contentid}
+		ORDER BY TOUR_COMMENT_NO DESC
+	</select>
+
+	<insert id="commentInsert" parameterType="TourCommentVO">
+		INSERT INTO tour_comment_tb (CONTENT_ID, USER_UID, CONTENT)
+		VALUES (#{contentid}, #{userUid}, #{content})
+	</insert>
+
+	<select id="likeCnt" parameterType="int" resultType="int">
+		SELECT count(*) 
+		FROM 
+			tour_like_tb 
+			where CONTENT_ID = #{contentid}
+			  and  STATUS = 'on'
+	</select>
+	
+	<insert id="likeInsert" parameterType="TourCommentVO">
+		INSERT INTO 
+		tour_like_tb (
+		USER_UID, CONTENT_ID, STATUS) VALUES (#{userUid}, #{contentid}, #{likeStatus}) 
+		ON DUPLICATE KEY UPDATE USER_UID=#{userUid}, status=#{likeStatus}
+	</insert>
+	
+	<select id="likeStatus" parameterType="TourCommentVO" resultType="string">
+		SELECT STATUS as likeStatus 
+		FROM tour_like_tb 
+		where CONTENT_ID = #{contentid} and USER_UID = #{userUid}
+	</select>
+	
+	
+	
+	<!-- 북마크 -->
+	<select id="bookmarkCnt" parameterType="int" resultType="int">
+		SELECT count(*) 
+		FROM 
+			tour_bookmark_tb 
+			where CONTENT_ID = #{contentid}
+			  and  STATUS = 'on'
+	</select>
+	
+	<insert id="bookmarkInsert" parameterType="TourCommentVO">
+		INSERT INTO 
+		tour_bookmark_tb (
+		USER_UID, CONTENT_ID, STATUS) VALUES (#{userUid}, #{contentid}, #{bookmarkStatus}) 
+		ON DUPLICATE KEY UPDATE USER_UID=#{userUid}, status=#{bookmarkStatus}
+	</insert>
+	
+	<select id="bookmarkStatus" parameterType="TourCommentVO" resultType="string">
+		SELECT STATUS as bookmarkStatus 
+		FROM tour_bookmark_tb 
+		where CONTENT_ID = #{contentid} and USER_UID = #{userUid}
+	</select>
+	
+</mapper>

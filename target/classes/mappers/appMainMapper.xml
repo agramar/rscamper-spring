@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.AppMainMapper">
+
+	<resultMap type="AppMainVO" id="AppMainMap">
+		<result column="CATEGORY_NAME" property="categoryName"/>
+		<result column="NO" property="no"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="USER_UID" property="userUid"/>
+		<result column="TITLE" property="title"/>
+		<result column="PICTURE" property="picture"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+		<result column="LIKE_CNT" property="likeCnt"/>
+		<result column="TARGET_TYPE" property="targetType"/>
+	</resultMap>
+	
+	<resultMap type="AppMainCommentVO" id="AppMainCommentMap">
+		<result column="NO" property="no"/>
+		<result column="TITLE" property="title"/>
+		<result column="REG_DATE" property="regDate"/>
+		<result column="TARGET_TYPE" property="targetType"/>
+	</resultMap>
+	
+	<resultMap type="AppMessageVO" id="AppMainMessageMap">
+		<result column="NOTES_NO" property="notesNo"/>
+		<result column="SENT_USER_UID" property="sentUserUid"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="DATE_SENT" property="dateSent"/>
+		<result column="DATE_READ" property="dateRead"/>
+		<result column="RECV_READ" property="recvRead"/>
+		<result column="PHOTO_URL" property="photoUrl"/>
+		<result column="DISPLAY_NAME" property="displayName"/>
+	</resultMap>
+
+	<select id="selectMainList" parameterType="hashMap" resultMap="AppMainMap">
+		(SELECT B.BOARD_NO AS NO, B.REG_DATE, B.USER_UID, TITLE, B.BOARD_NO AS PICTURE, U.DISPLAY_NAME, 
+				COALESCE((SELECT COUNT(*) FROM BOARD_LIKE_TB BL WHERE BL.TARGET_NO = B.BOARD_NO), 0) LIKE_CNT, 
+				(SELECT DISTINCT COALESCE(TARGET_TYPE, 1) FROM BOARD_TB B LEFT JOIN BOARD_LIKE_TB BL ON BL.TARGET_NO = B.BOARD_NO WHERE BL.TARGET_TYPE = '1') TARGET_TYPE
+		 FROM BOARD_TB B, USER_TB U
+		 WHERE B.USER_UID = U.USER_UID)
+		UNION
+		(SELECT R.RECORD_NO AS NO, R.REG_DATE, R.USER_UID, TITLE, R.PICTURE, U.DISPLAY_NAME, 
+				COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = R.RECORD_NO), 0) LIKE_CNT, 
+				(SELECT DISTINCT COALESCE(TARGET_TYPE, 3) FROM RECORD_TB R LEFT JOIN RECORD_LIKE_TB RL ON RL.RECORD_NO = R.RECORD_NO WHERE RL.RECORD_NO = R.RECORD_NO) TARGET_TYPE
+		 FROM RECORD_TB R, USER_TB U
+		 WHERE R.USER_UID = U.USER_UID
+		 	AND R.ISOPEN = 1)
+		UNION
+		(SELECT BR.BOARD_ROUTE_NO AS NO, BR.REG_DATE, BR.USER_UID, BR.TITLE, BR.TARGET_TYPE AS PICTURE, U.DISPLAY_NAME, 
+				(SELECT COUNT(*) FROM BOARD_LIKE_TB LIKETB WHERE LIKETB.TARGET_NO=BR.BOARD_ROUTE_NO AND LIKETB.TARGET_TYPE='2') LIKE_CNT,
+				BR.TARGET_TYPE
+		 FROM BOARD_ROUTE_TB BR, USER_TB U
+		 WHERE BR.USER_UID = U.USER_UID
+		 GROUP BY BR.BOARD_ROUTE_NO)
+		ORDER BY LIKE_CNT DESC, REG_DATE DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="countAllBoard" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_TB
+	</select>
+	
+	<select id="countAllRecord" resultType="int">
+		SELECT COUNT(*)
+		FROM RECORD_TB
+	</select>
+	
+	<select id="selectBoardListByCategoryNo" parameterType="hashMap" resultMap="AppMainMap">
+		SELECT C.CATEGORY_NAME, B.BOARD_NO AS NO, B.REG_DATE, B.USER_UID, TITLE, B.BOARD_NO AS PICTURE, U.PHOTO_URL, U.DISPLAY_NAME, 
+			COALESCE((SELECT COUNT(*) FROM BOARD_LIKE_TB BL WHERE BL.TARGET_NO = B.BOARD_NO), 0) LIKE_CNT, 
+			(SELECT DISTINCT COALESCE(TARGET_TYPE, 1) FROM BOARD_TB B LEFT JOIN BOARD_LIKE_TB BL ON BL.TARGET_NO = B.BOARD_NO WHERE BL.TARGET_TYPE = '1') TARGET_TYPE
+		 FROM BOARD_TB B, BOARD_CATEGORY_TB C, USER_TB U
+		 WHERE B.USER_UID = U.USER_UID
+		 	AND B.CATEGORY_NO = C.CATEGORY_NO
+		 	AND B.CATEGORY_NO = #{categoryNo}
+		 ORDER BY LIKE_CNT DESC, REG_DATE DESC
+		 LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="countBoardByCategoryNo" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_TB
+		WHERE CATEGORY_NO = #{categoryNo}
+	</select>
+	
+	<select id="selectRecordList" parameterType="hashMap" resultMap="AppMainMap">
+		 SELECT R.RECORD_NO AS NO, R.REG_DATE, R.USER_UID, TITLE, R.PICTURE, U.PHOTO_URL, U.DISPLAY_NAME, 
+			COALESCE((SELECT COUNT(*) FROM RECORD_LIKE_TB RL WHERE RL.RECORD_NO = R.RECORD_NO), 0) LIKE_CNT, 
+			(SELECT DISTINCT COALESCE(TARGET_TYPE, 3) FROM RECORD_TB R LEFT JOIN RECORD_LIKE_TB RL ON RL.RECORD_NO = R.RECORD_NO WHERE RL.RECORD_NO = R.RECORD_NO) TARGET_TYPE
+		 FROM RECORD_TB R, USER_TB U
+		 WHERE R.USER_UID = U.USER_UID
+		 	AND R.ISOPEN = 1
+		 ORDER BY LIKE_CNT DESC, REG_DATE DESC
+		 LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="selectMainCommentList" parameterType="string" resultMap="AppMainCommentMap">
+		(SELECT R.RECORD_NO AS NO, R.TITLE, RC.REG_DATE, R.TARGET_TYPE
+		 FROM RECORD_TB R, RECORD_COMMENT_TB RC
+		 WHERE R.USER_UID = #{userUid} AND R.RECORD_NO = RC.RECORD_NO)
+		UNION
+		(SELECT B.BOARD_NO AS NO, B.TITLE, BC.REG_DATE, (SELECT DISTINCT COALESCE(TARGET_TYPE, 1) FROM BOARD_TB B LEFT JOIN BOARD_LIKE_TB BL ON BL.TARGET_NO = B.BOARD_NO WHERE BL.TARGET_TYPE = '1') TARGET_TYPE
+		 FROM BOARD_TB B, BOARD_COMMENT_TB BC
+		 WHERE B.USER_UID = #{userUid} AND B.BOARD_NO = BC.BOARD_NO)
+		ORDER BY REG_DATE DESC
+		LIMIT 0, 4
+	</select>
+	
+	<select id="selectMainMessageList" parameterType="string" resultMap="AppMainMessageMap">
+		SELECT NOTES_NO, TITLE
+		FROM NOTES_TB
+		WHERE RECV_USER_UID = #{userUid}
+		AND RECV_READ = 'N'
+		ORDER BY DATE_SENT DESC
+		LIMIT 0, 4
+	</select>
+	
+	<select id="selectMainRouteList" parameterType="hashMap" resultMap="AppMainMap">
+		SELECT BR.BOARD_ROUTE_NO AS NO, BR.TARGET_TYPE, BR.TITLE, BR.USER_UID, BR.REG_DATE, U.DISPLAY_NAME, U.PHOTO_URL,
+			(SELECT COUNT(*) FROM BOARD_LIKE_TB LIKETB WHERE LIKETB.TARGET_NO=BR.BOARD_ROUTE_NO AND LIKETB.TARGET_TYPE='2') LIKE_CNT
+		FROM BOARD_ROUTE_TB BR, USER_TB U
+		WHERE BR.USER_UID = U.USER_UID
+		GROUP BY BR.BOARD_ROUTE_NO
+		ORDER BY LIKE_CNT DESC, BR.REG_DATE DESC
+		LIMIT #{page}, #{count}
+	</select>
+	
+	<select id="countAllRouteList" resultType="int">
+		SELECT COUNT(DISTINCT BOARD_ROUTE_NO)
+		FROM BOARD_ROUTE_TB
+	</select>
+	
+</mapper>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.UserMapper">
+
+	<resultMap id="UserVOMap" type="UserVO">
+		<result column="USER_UID" property="userUid" />
+		<result column="PHOTO_URL" property="photoUrl" />
+		<result column="DISPLAY_NAME" property="displayName" />
+		<result column="PROVIDER_UID" property="providerUid" />
+		<result column="PROVIDER_NAME" property="providerName" />
+		<result column="PROVIDER_DISPLAY_NAME" property="providerDisplayName" />
+		<result column="PROVIDER_PHOTO_URL" property="providerPhotoUrl" />
+		<result column="PROVIDER_EMAIL" property="providerEmail" />
+		<result column="BGPHOTO_URL" property="bgPhotoUrl" />
+		<result column="LOCATION_NO" property="locationNo" />
+		<result column="PHONE_NUMBER" property="phoneNumber" />
+		<result column="WEBSITE_URL" property="websiteUrl" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="LOCATION_NAME" property="locationName"></result>
+	</resultMap>
+	
+	<resultMap id="UserPhotoVOMap" type="UserPhotoVO">
+		<result column="PHOTO_NO" property="photoNo" />
+		<result column="USER_UID" property="userUid" />
+		<result column="REG_DATE" property="regDate" />
+	</resultMap>
+	
+	<resultMap type="LocationVO" id="LocationVOMap">
+		<result column="LOCATION_NO" property="locationNo"/>
+		<result column="LOCATION_NAME" property="locationName"/>
+	</resultMap>
+	
+	
+	<select id="selectMainByUidComment" parameterType="string"
+		resultType="UserVO">
+		SELECT DISPLAY_NAME as displayName, PHOTO_URL as photoUrl
+		FROM USER_TB
+		WHERE USER_UID = #{userUid}
+	</select>
+	
+	
+	<!-- ======================================================================================= -->
+	
+	<insert id="insertUser" parameterType="UserVO">
+		INSERT INTO USER_TB
+		(USER_UID,DISPLAY_NAME,PHOTO_URL,EMAIL,PROVIDER_UID,PROVIDER_NAME,PROVIDER_DISPLAY_NAME,PROVIDER_PHOTO_URL,PROVIDER_EMAIL,BGPHOTO_URL,LOCATION_NO,PHONE_NUMBER,WEBSITE_URL,INTRODUCE,BIRTHDAY)
+		VALUES
+		(#{userUid},#{displayName},#{photoUrl},#{email},#{providerUid},#{providerName},#{providerDisplayName},#{providerPhotoUrl},#{providerEmail},#{bgPhotoUrl},#{locationNo},#{phoneNumber},#{websiteUrl},#{introduce},#{birthday})
+		ON DUPLICATE KEY UPDATE USER_UID = #{userUid}
+	</insert>
+	
+	<select id="selectUserByUid" parameterType="string" resultMap="UserVOMap">
+		SELECT *
+		FROM USER_TB U, LOCATION_TB L
+		WHERE U.LOCATION_NO = L.LOCATION_NO AND USER_UID = #{userUid}
+	</select>
+	
+	<delete id="deleteUserByUid" parameterType="string">
+		DELETE 
+		FROM USER_TB
+		WHERE USER_UID = #{userUid}
+	</delete>
+	
+	<select id="selectUserPhotoPath" parameterType="UserPhotoVO" resultMap="UserPhotoVOMap">
+		SELECT *
+		FROM USER_PHOTO_TB
+		WHERE USER_UID = #{userUid} and TYPE = #{type}
+	</select>
+	
+	<delete id="deleteUserPhotoByNo" parameterType="int">
+		DELETE FROM USER_PHOTO_TB
+		WHERE PHOTO_NO = #{photoNo}
+	</delete>
+	
+	<insert id="insertUserPhoto" parameterType="UserPhotoVO">
+		INSERT INTO USER_PHOTO_TB 
+		(USER_UID, TYPE, PATH, SIZE)
+		VALUES 
+		(#{userUid}, #{type}, #{path}, #{size})
+	</insert>
+	
+	<update id="updateUserPhotoUrl" parameterType="UserPhotoVO">
+		UPDATE USER_TB
+		SET PHOTO_URL = #{photoUrl}
+		WHERE USER_UID = #{userUid}
+	</update>
+	
+	<update id="updateUserBgPhotoUrl" parameterType="UserPhotoVO">
+		UPDATE USER_TB
+		SET BGPHOTO_URL = #{bgPhotoUrl}
+		WHERE USER_UID = #{userUid}
+	</update>
+	
+	<update id="updateUserByUid" parameterType="UserVO">
+		update user_tb 
+		set DISPLAY_NAME = #{displayName}, LOCATION_NO = #{locationNo}, PHONE_NUMBER = #{phoneNumber}, INTRODUCE = #{introduce}, BIRTHDAY = #{birthday}, WEBSITE_URL = #{websiteUrl}, GENDER = #{gender}
+		where USER_UID = #{userUid}
+	</update>
+	
+	<select id="selectLocationList" resultMap="LocationVOMap">
+		SELECT *
+		FROM LOCATION_TB
+	</select>
+	
+	<select id="selectLotaionByNo" parameterType="int" resultMap="LocationVOMap">
+		SELECT *
+		FROM LOCATION_TB
+		WHERE LOCATION_NO = #{locationNo}
+	</select>
+	
+	<!-- ======================================================================================= -->
+
+	<select id="selectUserList" resultMap="UserVOMap">
+		SELECT *
+		FROM USER_TB
+	</select>
+
+</mapper>

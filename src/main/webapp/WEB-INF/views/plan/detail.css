@@ -1,0 +1,253 @@
+@CHARSET "UTF-8";
+.modal-header .modal-title, .modal-header h4.modal-title {
+    width: 100%;
+    line-height: 36px;
+    font-size: 18px;
+    color: #333!important;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal .modal-content {
+    border: none!important;
+    border-radius: 0!important;
+    box-shadow: none!important;
+}
+
+.modal-header .close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-weight: 100;
+    font-size: 32px;
+}
+
+.select-style {
+    border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("img/icon-select.png") no-repeat 90% 50%;
+}
+
+.select-style select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+}
+
+.select-style select:focus {
+    outline: none;
+}
+
+#writeTourPlan {
+	width: 1200px;
+    overflow:hidden;
+    height:auto;
+	margin: 0 auto;
+	background: #f4f4f4;
+}
+
+#writeTourPlan>div {
+	float: left;
+}
+
+.parallax-quote-in > h1:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#leftMenu {
+	width: 300px;
+	height: 100%;
+	padding-top: 15px;
+	padding-left: 10px;
+	padding-right: 5px;
+}
+
+#rightContents {
+	width: 900px;
+	height: 100%;
+	padding-top: 15px;
+	padding-left: 5px;
+	padding-right: 10px;
+}
+
+#leftMenu>div, #rightContents>div {
+	margin-bottom: 10px;
+	background: white;
+	box-shadow: 0 1px 1px rgba(125, 125, 125, .2);
+}
+
+#leftMenu>div {
+	width: 280px;
+}
+
+#rightContents>div {
+	width: 880px;
+}
+
+#contentHeader fieldset {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 0px;
+}
+
+#attractionTab {
+	height: 100%;
+}
+
+#attractionTab > div {
+    height: 100%;
+}
+
+/* tabContent */
+#attractionTab > div > div {
+    height: 100%;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+#searchResult {
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+/* 검색 결과 창 */
+#searchContent {
+    height: 1235px;
+    width: 275px;
+    overflow-y: auto;
+    position: relative;
+/*     position:fixed; */
+/*     top:200px; */
+    
+}
+
+#searchContent:hover {
+	
+}
+
+.tourSpot {
+	cursor: pointer;
+	height: 100px;
+	width: 270px;
+	margin-top: 2px; 
+	margin-bottom: 2px;
+	box-shadow: 0 1px 1px rgba(125, 125, 125, .2);
+	position: relative;
+	background-color: white;
+}
+
+.tourSpot:HOVER {
+	cursor:pointer;
+	background-color: #acde83;
+}
+
+.tourSpot:HOVER *{
+	color: white;
+}
+
+.tourSpotImageDiv {
+	float: left;
+}
+
+.tourSpotImage {
+	height: 100px;
+	width: 100px;
+}
+
+.tourSpotContent {
+	float: left;
+	padding: 5px;
+	width: 165px;
+	height: 100px;
+	overflow: hidden;
+	color: gray;
+}
+
+/* 일정표 */
+#calendar {
+	margin-top: 20px;
+}
+
+
+.modal-dialog.modal-fullsize {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.modal-content.modal-fullsize {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0; 
+}
+.modal.modal-center {
+  text-align: center;
+}
+
+.modal-dialog.modal-80size {
+  width: 80%;
+  height: 80%;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content.modal-80size {
+  height: auto;
+  min-height: 80%;
+}
+
+.modal-dialog.modal-90size {
+  width: 90%;
+  height: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content.modal-90size {
+  height: auto;
+  min-height: 90%;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal.modal-center:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog.modal-center {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle; 
+}
+
+.ellipsis{
+ overflow: hidden;
+ text-overflow: ellipsis;
+ display: -webkit-box;
+ -webkit-line-clamp: 3; /* 라인수 */
+ -webkit-box-orient: vertical;
+ word-wrap:break-word; 
+} 
+
+
+#memo-content img {
+	width: 100%;	
+}
+
+
+
+
+
+

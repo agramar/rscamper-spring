@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
+  </head>
+  <body>
+    <div id="map_canvas" style="width: 1000px; height: 800px;"></div>
+    <script type="text/javascript">
+
+// var map;
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: -34.397, lng: 150.644},
+//     zoom: 8
+//   });
+// }
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: {lat: -33, lng: 151},
+//     mapTypeControl: true,
+//     mapTypeControlOptions: {
+//       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+//       mapTypeIds: [
+//         google.maps.MapTypeId.ROADMAP,
+//         google.maps.MapTypeId.TERRAIN
+//       ]
+//     }
+//   });
+// }
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 12,
+//     center: {lat: -28.643387, lng: 153.612224},
+//     mapTypeControl: true,
+//     mapTypeControlOptions: {
+//         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+//         position: google.maps.ControlPosition.TOP_CENTER
+//     },
+//     zoomControl: true,
+//     zoomControlOptions: {
+//         position: google.maps.ControlPosition.LEFT_CENTER
+//     },
+//     scaleControl: true,
+//     streetViewControl: true,
+//     streetViewControlOptions: {
+//         position: google.maps.ControlPosition.LEFT_TOP
+//     }
+//   });
+// }
+
+// //Create a div to hold the control.
+// var controlDiv = document.createElement('div');
+
+// // Set CSS for the control border
+// var controlUI = document.createElement('div');
+// controlUI.style.backgroundColor = '#fff';
+// controlUI.style.border = '2px solid #fff';
+// controlUI.style.cursor = 'pointer';
+// controlUI.style.marginBottom = '22px';
+// controlUI.style.textAlign = 'center';
+// controlUI.title = 'Click to recenter the map';
+// controlDiv.appendChild(controlUI);
+
+// // Set CSS for the control interior
+// var controlText = document.createElement('div');
+// controlText.style.color = 'rgb(25,25,25)';
+// controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+// controlText.style.fontSize = '16px';
+// controlText.style.lineHeight = '38px';
+// controlText.style.paddingLeft = '5px';
+// controlText.style.paddingRight = '5px';
+// controlText.innerHTML = 'Center Map';
+// controlUI.appendChild(controlText);
+
+// var chicago = {lat: 41.850, lng: -87.650};
+
+// google.maps.event.addDomListener(outer, 'click', function() {
+//   map.setCenter(chicago)
+// });
+
+
+
+// var map;
+// var seoul = {lat: 37.6, lng: 127};
+
+// /**
+//  * The CenterControl adds a control to the map that recenters the map on Chicago.
+//  * This constructor takes the control DIV as an argument.
+//  * @constructor
+//  */
+// function CenterControl(controlDiv, map) {
+
+//   // Set CSS for the control border.
+//   var controlUI = document.createElement('div');
+//   controlUI.style.backgroundColor = '#fff';
+//   controlUI.style.border = '2px solid #fff';
+//   controlUI.style.borderRadius = '3px';
+//   controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+//   controlUI.style.cursor = 'pointer';
+//   controlUI.style.marginBottom = '22px';
+//   controlUI.style.textAlign = 'center';
+//   controlUI.title = 'Click to recenter the map';
+//   controlDiv.appendChild(controlUI);
+
+//   // Set CSS for the control interior.
+//   var controlText = document.createElement('div');
+//   controlText.style.color = 'rgb(25,25,25)';
+//   controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+//   controlText.style.fontSize = '16px';
+//   controlText.style.lineHeight = '38px';
+//   controlText.style.paddingLeft = '5px';
+//   controlText.style.paddingRight = '5px';
+//   controlText.innerHTML = 'Center Map';
+//   controlUI.appendChild(controlText);
+
+//   // Setup the click event listeners: simply set the map to Chicago.
+//   controlUI.addEventListener('click', function() {
+//     map.setCenter(seoul);
+//   });
+
+// }
+
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 12,
+//     center: seoul
+//   });
+
+//   // Create the DIV to hold the control and call the CenterControl() constructor
+//   // passing in this DIV.
+//   var centerControlDiv = document.createElement('div');
+//   var centerControl = new CenterControl(centerControlDiv, map);
+
+//   centerControlDiv.index = 1;
+//   map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+// }
+
+// var map;
+// var chicago = {lat: 41.85, lng: -87.65};
+
+// /**
+//  * The CenterControl adds a control to the map that recenters the map on
+//  * Chicago.
+//  * @constructor
+//  * @param {!Element} controlDiv
+//  * @param {!google.maps.Map} map
+//  * @param {?google.maps.LatLng} center
+//  */
+// function CenterControl(controlDiv, map, center) {
+//   // We set up a variable for this since we're adding event listeners later.
+//   var control = this;
+
+//   // Set the center property upon construction
+//   control.center_ = center;
+//   controlDiv.style.clear = 'both';
+
+//   // Set CSS for the control border
+//   var goCenterUI = document.createElement('div');
+//   goCenterUI.id = 'goCenterUI';
+//   goCenterUI.title = 'Click to recenter the map';
+//   controlDiv.appendChild(goCenterUI);
+
+//   // Set CSS for the control interior
+//   var goCenterText = document.createElement('div');
+//   goCenterText.id = 'goCenterText';
+//   goCenterText.innerHTML = 'Center Map';
+//   goCenterUI.appendChild(goCenterText);
+
+//   // Set CSS for the setCenter control border
+//   var setCenterUI = document.createElement('div');
+//   setCenterUI.id = 'setCenterUI';
+//   setCenterUI.title = 'Click to change the center of the map';
+//   controlDiv.appendChild(setCenterUI);
+
+//   // Set CSS for the control interior
+//   var setCenterText = document.createElement('div');
+//   setCenterText.id = 'setCenterText';
+//   setCenterText.innerHTML = 'Set Center';
+//   setCenterUI.appendChild(setCenterText);
+
+//   // Set up the click event listener for 'Center Map': Set the center of the map
+//   // to the current center of the control.
+//   goCenterUI.addEventListener('click', function() {
+//     var currentCenter = control.getCenter();
+//     map.setCenter(currentCenter);
+//   });
+
+//   // Set up the click event listener for 'Set Center': Set the center of the
+//   // control to the current center of the map.
+//   setCenterUI.addEventListener('click', function() {
+//     var newCenter = map.getCenter();
+//     control.setCenter(newCenter);
+//   });
+// }
+
+// /**
+//  * Define a property to hold the center state.
+//  * @private
+//  */
+// CenterControl.prototype.center_ = null;
+
+// /**
+//  * Gets the map center.
+//  * @return {?google.maps.LatLng}
+//  */
+// CenterControl.prototype.getCenter = function() {
+//   return this.center_;
+// };
+
+// /**
+//  * Sets the map center.
+//  * @param {?google.maps.LatLng} center
+//  */
+// CenterControl.prototype.setCenter = function(center) {
+//   this.center_ = center;
+// };
+
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 12,
+//     center: chicago
+//   });
+
+//   // Create the DIV to hold the control and call the CenterControl() constructor
+//   // passing in this DIV.
+//   var centerControlDiv = document.createElement('div');
+//   var centerControl = new CenterControl(centerControlDiv, map, chicago);
+
+//   centerControlDiv.index = 1;
+//   centerControlDiv.style['padding-top'] = '10px';
+//   map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+// }
+
+// function initMap() {
+//   var myLatlng = {lat: 37.5552653, lng: 126.97082};
+
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: myLatlng
+//   });
+
+//   var marker = new google.maps.Marker({
+//     position: myLatlng,
+//     map: map,
+//     title: 'Click to zoom'
+//   });
+
+//   map.addListener('center_changed', function() {
+//     // 3 seconds after the center of the map has changed, pan back to the
+//     // marker.
+//     window.setTimeout(function() {
+//       map.panTo(marker.getPosition());
+//     }, 3000);
+//   });
+
+//   marker.addListener('click', function() {
+//     map.setZoom(8);
+//     map.setCenter(marker.getPosition());
+//   });
+// }
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: {lat: 37.5552653, lng: 126.97082 }
+//   });
+
+//   map.addListener('click', function(e) {
+//     placeMarkerAndPanTo(e.latLng, map);
+//   });
+// }
+
+// function placeMarkerAndPanTo(latLng, map) {
+//   var marker = new google.maps.Marker({
+//     position: latLng,
+//     map: map
+//   });
+//   map.panTo(latLng);
+// }
+	
+// 	function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: {lat: 37.5552653, lng: 126.97082 }
+//   });
+
+//   var bounds = {
+//     east: (37.580016, 127.0425573),
+//    	west: (37.52989, 126.9625863),
+//    	north: (37.5615, 127.0363373),
+//     south: (37.595619, 127.0835323)
+//   };
+
+//   // Display the area between the location southWest and northEast.
+//   map.fitBounds(bounds);
+
+//   // Add 5 markers to map at random locations.
+//   // For each of these markers, give them a title with their index, and when
+//   // they are clicked they should open an infowindow with text from a secret
+//   // message.
+//   var secretMessages = ['서울역', '청량리', '용산', '왕십리', '상봉'];
+//   var lngSpan = bounds.east - bounds.west;
+//   var latSpan = bounds.north - bounds.south;
+//   for (var i = 0; i < secretMessages.length; ++i) {
+//     var marker = new google.maps.Marker({
+//       position: {
+//         lat: bounds.south + latSpan * Math.random(),
+//         lng: bounds.west + lngSpan * Math.random()
+//       },
+//       map: map
+//     });
+//     attachSecretMessage(marker, secretMessages[i]);
+//   }
+// }
+
+// // Attaches an info window to a marker with the provided message. When the
+// // marker is clicked, the info window will open with the secret message.
+// function attachSecretMessage(marker, secretMessage) {
+//   var infowindow = new google.maps.InfoWindow({
+//     content: secretMessage
+//   });
+
+//   marker.addListener('click', function() {
+//     infowindow.open(marker.get('map'), marker);
+//   });
+// }
+
+// 	function initMap() {
+//   var originalMapCenter = new google.maps.LatLng(-25.363882, 131.044922);
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: originalMapCenter
+//   });
+
+//   var infowindow = new google.maps.InfoWindow({
+//     content: 'Change the zoom level',
+//     position: originalMapCenter
+//   });
+//   infowindow.open(map);
+
+//   map.addListener('zoom_changed', function() {
+//     infowindow.setContent('Zoom: ' + map.getZoom());
+//   });
+// }
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 36.964, lng: -122.015},
+//     zoom: 18,
+//     mapTypeId: google.maps.MapTypeId.SATELLITE
+//   });
+//   map.setTilt(45);
+// }
+
+// var map;
+
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 45.518, lng: -122.672},
+//     zoom: 18,
+//     mapTypeId: google.maps.MapTypeId.SATELLITE,
+//     heading: 90,
+//     tilt: 45
+//   });
+// }
+
+// function rotate90() {
+//   var heading = map.getHeading() || 0;
+//   map.setHeading(heading + 90);
+// }
+
+// function autoRotate() {
+//   // Determine if we're showing aerial imagery.
+//   if (map.getTilt() !== 0) {
+//     window.setInterval(rotate90, 3000);
+//   }
+// }
+
+/*
+ * This demo demonstrates how to replace default map tiles with custom imagery.
+ * In this case, the CoordMapType displays gray tiles annotated with the tile
+ * coordinates.
+ *
+ * Try panning and zooming the map to see how the coordinates change.
+ */
+
+/**
+ * @constructor
+ * @implements {google.maps.MapType}
+ */
+// function CoordMapType(tileSize) {
+//   this.tileSize = tileSize;
+// }
+
+// CoordMapType.prototype.maxZoom = 19;
+// CoordMapType.prototype.name = 'Tile #s';
+// CoordMapType.prototype.alt = 'Tile Coordinate Map Type';
+
+// CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+//   var div = ownerDocument.createElement('div');
+//   div.innerHTML = coord;
+//   div.style.width = this.tileSize.width + 'px';
+//   div.style.height = this.tileSize.height + 'px';
+//   div.style.fontSize = '10';
+//   div.style.borderStyle = 'solid';
+//   div.style.borderWidth = '1px';
+//   div.style.borderColor = '#AAAAAA';
+//   div.style.backgroundColor = '#E5E3DF';
+//   return div;
+// };
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 10,
+//     center: {lat: 41.850, lng: -87.650},
+//     streetViewControl: false,
+//     mapTypeId: 'coordinate',
+//     mapTypeControlOptions: {
+//       mapTypeIds: ['coordinate', google.maps.MapTypeId.ROADMAP],
+//       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+//     }
+//   });
+
+//   map.addListener('maptypeid_changed', function() {
+//     var showStreetViewControl = map.getMapTypeId() !== 'coordinate';
+//     map.setOptions({
+//       streetViewControl: showStreetViewControl
+//     });
+//   });
+
+//   // Now attach the coordinate map type to the map's registry.
+//   map.mapTypes.set('coordinate',
+//                    new CoordMapType(new google.maps.Size(256, 256)));
+// }
+
+// function CoordMapType(tileSize) {
+//   this.tileSize = tileSize;
+// }
+
+// CoordMapType.prototype.getTile = function(coord, zoom, ownerDocument) {
+//   var div = ownerDocument.createElement('div');
+//   div.innerHTML = coord;
+//   div.style.width = this.tileSize.width + 'px';
+//   div.style.height = this.tileSize.height + 'px';
+//   div.style.fontSize = '10';
+//   div.style.borderStyle = 'solid';
+//   div.style.borderWidth = '1px';
+//   div.style.borderColor = '#AAAAAA';
+//   return div;
+// };
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 10,
+//     center: {lat: 41.850, lng: -87.650}
+//   });
+
+//   // Insert this overlay map type as the first overlay map type at
+//   // position 0. Note that all overlay map types appear on top of
+//   // their parent base map.
+//   map.overlayMapTypes.insertAt(
+//       0, new CoordMapType(new google.maps.Size(256, 256)));
+// }
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: 0, lng: 0},
+//     zoom: 1,
+//     streetViewControl: false,
+//     mapTypeControlOptions: {
+//       mapTypeIds: ['moon']
+//     }
+//   });
+
+//   var moonMapType = new google.maps.ImageMapType({
+//     getTileUrl: function(coord, zoom) {
+//         var normalizedCoord = getNormalizedCoord(coord, zoom);
+//         if (!normalizedCoord) {
+//           return null;
+//         }
+//         var bound = Math.pow(2, zoom);
+//         return '//mw1.google.com/mw-planetary/lunar/lunarmaps_v1/clem_bw' +
+//             '/' + zoom + '/' + normalizedCoord.x + '/' +
+//             (bound - normalizedCoord.y - 1) + '.jpg';
+//     },
+//     tileSize: new google.maps.Size(256, 256),
+//     maxZoom: 9,
+//     minZoom: 0,
+//     radius: 1738000,
+//     name: 'Moon'
+//   });
+
+//   map.mapTypes.set('moon', moonMapType);
+//   map.setMapTypeId('moon');
+// }
+
+// // Normalizes the coords that tiles repeat across the x axis (horizontally)
+// // like the standard Google map tiles.
+// function getNormalizedCoord(coord, zoom) {
+//   var y = coord.y;
+//   var x = coord.x;
+
+//   // tile range in one direction range is dependent on zoom level
+//   // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+//   var tileRange = 1 << zoom;
+
+//   // don't repeat across y-axis (vertically)
+//   if (y < 0 || y >= tileRange) {
+//     return null;
+//   }
+
+//   // repeat across x-axis
+//   if (x < 0 || x >= tileRange) {
+//     x = (x % tileRange + tileRange) % tileRange;
+//   }
+
+//   return {x: x, y: y};
+// }
+
+// This example defines an image map type using the Gall-Peters projection.
+// https://en.wikipedia.org/wiki/Gall%E2%80%93Peters_projection
+
+// function initMap() {
+//   // Create a map. Use the Gall-Peters map type.
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 0,
+//     center: {lat: 37.595619, lng: 127.0835323},
+//     mapTypeControl: false
+//   });
+
+//   initGallPeters();
+//   map.mapTypes.set('gallPeters', gallPetersMapType);
+//   map.setMapTypeId('gallPeters');
+
+//   // Show the lat and lng under the mouse cursor.
+//   var coordsDiv = document.getElementById('coords');
+//   map.controls[google.maps.ControlPosition.TOP_CENTER].push(coordsDiv);
+//   map.addListener('mousemove', function(event) {
+//     coordsDiv.textContent =
+//         'lat: ' + Math.round(event.latLng.lat()) + ', ' +
+//         'lng: ' + Math.round(event.latLng.lng());
+//   });
+
+//   // Add some markers to the map.
+//   map.data.setStyle(function(feature) {
+//     return {
+//       title: feature.getProperty('name'),
+//       optimized: false
+//     };
+//   });
+//   map.data.addGeoJson(cities);
+// }
+
+// var gallPetersMapType;
+// function initGallPeters() {
+//   var GALL_PETERS_RANGE_X = 800;
+//   var GALL_PETERS_RANGE_Y = 512;
+
+//   // Fetch Gall-Peters tiles stored locally on our server.
+//   gallPetersMapType = new google.maps.ImageMapType({
+//     getTileUrl: function(coord, zoom) {
+//       var scale = 1 << zoom;
+
+//       // Wrap tiles horizontally.
+//       var x = ((coord.x % scale) + scale) % scale;
+
+//       // Don't wrap tiles vertically.
+//       var y = coord.y;
+//       if (y < 0 || y >= scale) return null;
+
+//       return 'images/gall-peters_' + zoom + '_' + x + '_' + y + '.png';
+//     },
+//     tileSize: new google.maps.Size(GALL_PETERS_RANGE_X, GALL_PETERS_RANGE_Y),
+//     isPng: true,
+//     minZoom: 0,
+//     maxZoom: 1,
+//     name: 'Gall-Peters'
+//   });
+
+//   // Describe the Gall-Peters projection used by these tiles.
+//   gallPetersMapType.projection = {
+//     fromLatLngToPoint: function(latLng) {
+//       var latRadians = latLng.lat() * Math.PI / 180;
+//       return new google.maps.Point(
+//           GALL_PETERS_RANGE_X * (0.5 + latLng.lng() / 360),
+//           GALL_PETERS_RANGE_Y * (0.5 - 0.5 * Math.sin(latRadians)));
+//     },
+//     fromPointToLatLng: function(point, noWrap) {
+//       var x = point.x / GALL_PETERS_RANGE_X;
+//       var y = Math.max(0, Math.min(1, point.y / GALL_PETERS_RANGE_Y));
+
+//       return new google.maps.LatLng(
+//           Math.asin(1 - 2 * y) * 180 / Math.PI,
+//           -180 + 360 * x,
+//           noWrap);
+//     }
+//   };
+// }
+
+// // GeoJSON, describing the locations and names of some cities.
+// var cities = {
+//   type: 'FeatureCollection',
+//   features: [{
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [-87.650, 41.850]},
+//     properties: {name: 'Chicago'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [-149.900, 61.218]},
+//     properties: {name: 'Anchorage'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [-99.127, 19.427]},
+//     properties: {name: 'Mexico City'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [-0.126, 51.500]},
+//     properties: {name: 'London'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [28.045, -26.201]},
+//     properties: {name: 'Johannesburg'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [15.322, -4.325]},
+//     properties: {name: 'Kinshasa'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [151.207, -33.867]},
+//     properties: {name: 'Sydney'}
+//   }, {
+//     type: 'Feature',
+//     geometry: {type: 'Point', coordinates: [0, 0]},
+//     properties: {name: '0°N 0°E'}
+//   }]
+// };
+
+// function initMap() {
+//   var myLatLng = {lat: -25.363, lng: 131.044};
+
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 4,
+//     center: myLatLng
+//   });
+
+//   var marker = new google.maps.Marker({
+//     position: myLatLng,
+//     map: map,
+//     title: 'Hello World!'
+    
+//   });
+//   console.log(marker);
+// }
+// var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+// var mapOptions = {
+//   zoom: 4,
+//   center: myLatlng
+// }
+// var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+// var marker = new google.maps.Marker({
+//     position: myLatlng,
+//     title:"Hello World!"
+// });
+
+// // To add the marker to the map, call setMap();
+// marker.setMap(map);
+
+// var marker;
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 13,
+//     center: {lat: 59.325, lng: 18.070}
+//   });
+
+//   marker = new google.maps.Marker({
+//     map: map,
+//     draggable: true,
+//     animation: google.maps.Animation.BOUNCE,
+//     position: {lat: 59.327, lng: 18.067}
+//   });
+//   marker.addListener('click', toggleBounce);
+// }
+
+// function toggleBounce() {
+//   if (marker.getAnimation() !== null) {
+//     marker.setAnimation(null);
+//   } else {
+//     marker.setAnimation(google.maps.Animation.BOUNCE);
+//   }
+// }
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 10,
+//     center: {lat: 36, lng: 128}
+//   });
+
+//   setMarkers(map);
+// }
+
+// 	var korea = [
+// 		['용산', 37.52989, 126.9625863, 3],
+// 		['서울역', 37.52989, 126.9625863, 2],
+// 		['춘천', 37.88439, 127.7144143, 1 ]
+// ];
+// 	function setMarkers(map) {
+// 		  // Adds markers to the map.
+
+// 		  // Marker sizes are expressed as a Size of X,Y where the origin of the image
+// 		  // (0,0) is located in the top left of the image.
+
+// 		  // Origins, anchor positions and coordinates of the marker increase in the X
+// 		  // direction to the right and in the Y direction down.
+
+// 		  // Shapes define the clickable region of the icon. The type defines an HTML
+// 		  // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+// 		  // The final coordinate closes the poly by connecting to the first coordinate.
+// 		  var shape = {
+// 		    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+// 		    type: 'poly'
+// 		  };
+// 		  for (var i = 0; i < korea.length; i++) {
+// 		    var kor = korea[i];
+// 		    var marker = new google.maps.Marker({
+// 		      position: {lat: kor[1], lng: kor[2]},
+// 		      map: map,
+// 		      shape: shape,
+// 		      title: kor[0],
+// 		      zIndex: kor[3]
+// 		    });
+// 		  }
+// 		}	
+
+// function initMap() {
+//   var map = new google.maps.Map(document.getElementById('map'), {
+//     zoom: 3,
+//     center: {lat: 0, lng: -180},
+//     mapTypeId: google.maps.MapTypeId.TERRAIN
+//   });
+
+//   var flightPlanCoordinates = [
+//     {lat: 37.772, lng: -122.214},
+//     {lat: 21.291, lng: -157.821},
+//     {lat: -18.142, lng: 178.431},
+//     {lat: -27.467, lng: 153.027}
+//   ];
+//   var flightPath = new google.maps.Polyline({
+//     path: flightPlanCoordinates,
+//     geodesic: true,
+//     strokeColor: '#FF0000',
+//     strokeOpacity: 1.0,
+//     strokeWeight: 2
+//   });
+
+//   flightPath.setMap(map);
+// }
+	// 마크, 동선을 그리고 난 후 해당 위치를 array에 저장합니다.
+
+	
+// var MarkersArray = [];
+// var Coordinates= [];
+// var travelPathArray = [];
+// var map;
+
+// function initialize() {
+//   var myLatlng = new google.maps.LatLng(33.397, 126.65544);
+//   var myOptions = {
+//   zoom: 10,
+//   center: myLatlng,
+//   mapTypeId: google.maps.MapTypeId.ROADMAP
+// }
+// map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+// google.maps.event.addListener(map, 'click', function(event) { 
+//   var marker = new google.maps.Marker({ 
+//   position: event.latLng, 
+//   map: map,
+//   title: '위치마커'
+// });
+// attachMessage(marker, event.latLng); 
+// //선을 그리기 위해 좌표를 넣는다.
+// Coordinates.push( event.latLng ); 
+// //마커 담기
+// MarkersArray.push(marker);
+//         //array에 담은 위도,경도 데이타를 가지고 동선 그리기
+// flightPath();
+// });
+// }
+
+// //해당 위치에 주소를 가져오고, 마크를 클릭시 infowindow에 주소를 표시한다.
+// function attachMessage(marker, latlng) {
+// geocoder = new google.maps.Geocoder();
+//  geocoder.geocode({'latLng': latlng}, function(results, status) {
+//      if (status == google.maps.GeocoderStatus.OK) {
+// if (results[0]) {
+// var address_nm = results[0].formatted_address;
+// var infowindow = new google.maps.InfoWindow(
+//      { content: address_nm,
+// size: new google.maps.Size(50,50)
+//      });
+//  google.maps.event.addListener(marker, 'click', function() {
+//    infowindow.open(map,marker);
+//  });
+// }
+//      } else {
+// alert('주소 가져오기 오류!'); 
+//      }
+// });
+// }
+
+// //동선그리기
+// function flightPath(){
+// for (i in travelPathArray){
+// travelPathArray[i].setMap(null);
+// }
+// var flightPath = new google.maps.Polyline({
+// path: Coordinates,
+// strokeColor: "#FF0000",
+// strokeOpacity: 0.3,
+// strokeWeight: 2
+// });
+// flightPath.setMap(map);
+// travelPathArray.push(flightPath);
+// }
+
+// 	function initialize() {
+//       this.counter = 0;
+//       this.map = new GMap2(document.getElementById("map_canvas"));
+//       this.map.setCenter(new GLatLng(37.4419, -122.1419), 13);
+//       var myEventListener = GEvent.bind(this.map, "click", this, function(overlay, latlng) {
+//          if (this.counter == 0) {
+//            if (latlng) {
+//              this.map.addOverlay(new GMarker(latlng))
+//              this.counter++;
+//            } else if (overlay instanceof GMarker) {
+//              // This code is never executed as the event listener is 
+//              // removed the second time this event is triggered
+//              this.removeOverlay(marker)
+//            }
+//          } else {
+//            GEvent.removeListener(myEventListener);
+//          }
+//       }); 
+//     }
+
+
+			var neighborhoods = [
+					  {lat: 52.511, lng: 13.447},
+					  {lat: 52.549, lng: 13.422},
+					  {lat: 52.497, lng: 13.396},
+					  {lat: 52.517, lng: 13.394}
+				];
+		
+		var markers = [];
+		var map;
+		
+		function initMap() {
+		  map = new google.maps.Map(document.getElementById('map'), {
+		    zoom: 12,
+		    center: {lat: 52.520, lng: 13.410}
+		  });
+		}
+		
+		function drop() {
+			  for (var i =0; i < markers.length; i++) {
+			    setTimeout(function() {
+			      addMarkerMethod();
+			    }, i * 200);
+			  }
+			}
+		
+		function addMarkerWithTimeout(position, timeout) {
+		  window.setTimeout(function() {
+		    markers.push(new google.maps.Marker({
+		      position: position,
+		      map: map,
+		      animation: google.maps.Animation.DROP
+		    }));
+		  }, timeout);
+		}
+		
+		function clearMarkers() {
+		  for (var i = 0; i < markers.length; i++) {
+		    markers[i].setMap(null);
+		  }
+		  markers = [];
+		}
+
+
+
+
+
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDP280f_8sA7GmSMVAXTl9DdUsDGRXTUgM&callback=initMap">
+    </script>
+  </body>
+</html>

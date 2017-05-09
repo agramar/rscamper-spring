@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.rscamper.MypageMapper">
+
+	<select id="selectMenuCountByUserUid" resultType="MypageCountVO" parameterType="String">
+		SELECT 
+		(SELECT COUNT(*) FROM NOTES_TB WHERE RECV_USER_UID = #{useruid} AND RECV_READ LIKE 'N') messageCnt,
+		(SELECT COUNT(*) FROM RECORD_TB WHERE USER_UID = #{useruid}) myTourPlanCnt,
+		(SELECT COUNT(*) FROM BOARD_TB WHERE USER_UID = #{useruid}) myPostCnt,
+		(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB WHERE USER_UID = #{useruid} AND TARGET_TYPE = '1') bookmarkPostCnt,
+		(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB WHERE USER_UID = #{useruid} AND TARGET_TYPE = '3') bookmarkTourPlanCnt,
+		(SELECT COUNT(*) FROM TOUR_BOOKMARK_TB WHERE USER_UID = #{useruid} AND STATUS LIKE 'ON') bookmarkTourSpotCnt 
+	</select>
+
+</mapper>

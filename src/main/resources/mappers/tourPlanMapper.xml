@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.rscamper.TourPlanMapper">
+
+	<resultMap type="TourPlanVO" id="TourPlanVOMap">
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+		<result property="arriveDate" column="ARRIVE_DATE"/>
+		<result property="title" column="TITLE"/>
+		<result property="budGet" column="BUDGET"/>
+		<result property="picture" column="PICTURE"/>
+		<result property="period" column="PERIOD" />
+		<result property="strapline" column="STRAPLINE"/>
+		<result property="introduce" column="INTRODUCE"/>
+		<result property="regDate" column="REG_DATE"/>
+		
+		<result property="likeCnt" column="LIKE_CNT"/>
+		<result property="bookmarkCnt" column="BOOKMARK_CNT"/>
+		<result property="customCnt" column="CUSTOM_CNT"/>
+		<result property="commentCnt" column="COMMENT_CNT"/>
+		
+		<result property="displayName" column="DISPLAY_NAME"/>
+		<result property="photoUrl" column="PHOTO_URL"/>
+		
+		<result property="filePath" column="FILE_PATH"/>
+	</resultMap>
+	
+		<resultMap type="RecordLocationVO" id="RecordLocationMap">
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="contentCode" column="CONTENT_CODE"/>
+		<result property="imageUrl" column="IMAGE_URL"/>
+		<result property="detailDepartureDate" column="DETAIL_DEPARTURE_DATE"/>
+		<result property="contentTypeId" column="CONTENT_TYPE_ID"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+	</resultMap>
+	
+	<resultMap type="TourPlanSpotVO" id="TourPlanSpotVOMap">
+		<result property="publicDataListNo" column="PUBLIC_DATA_LIST_NO" />
+		<result property="addr1" column="addr1"/>
+		<result property="addr2" column="addr2"/>
+		<result property="areacode" column="areacode"/>
+		<result property="cat1" column="cat1"/>
+		<result property="cat2" column="cat2"/>
+		<result property="cat3" column="cat3"/>
+		<result property="contentid" column="contentid"/>
+		<result property="contenttypeid" column="contenttypeid"/>
+		<result property="createdtime" column="createdtime"/>
+		<result property="firstimage" column="firstimage"/>
+		<result property="firstimage2" column="firstimage2"/>
+		<result property="mapx" column="mapx"/>
+		<result property="mapy" column="mapy"/>
+		<result property="mlevel" column="mlevel"/>
+		<result property="modifiedtime" column="modifiedtime"/>
+		<result property="readcount" column="readcount"/>
+		<result property="sigungucode" column="sigungucode"/>
+		<result property="title" column="title"/>
+		<result property="zipcode" column="zipcode"/>
+		<result property="userUid" column="userUid"/>
+		<result property="status" column="status"/>
+		<result property="regDate" column="regDate"/>
+	</resultMap>
+	
+	<resultMap type="TourPlanCoverVO" id="TourPlanCoverVOMap">
+		<result property="coverNo" column="COVER_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="realPath" column="REAL_PATH"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="oriName" column="ORI_NAME"/>
+		<result property="fileName" column="FILE_NAME"/>
+	</resultMap>
+	
+	<resultMap type="RecordCoverVO" id="RecordCoverMap">
+		<result property="coverNo" column="COVER_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="realPath" column="REAL_PATH"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="oriName" column="ORI_NAME"/>
+		<result property="fileName" column="FILE_NAME"/>
+	</resultMap>
+	
+	<resultMap type="TourPlanScheduleVO" id="TourPlanScheduleVOMap">
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="contentCode" column="CONTENT_CODE"/>
+		<result property="contentTypeId" column="CONTENT_TYPE_ID"/>
+		<result property="imageUrl" column="IMAGE_URL"/>
+		<result property="detailDepartureDate" column="DETAIL_DEPARTURE_DATE"/>
+		<result property="departureDate" column="DEPARTURE_DATE"/>
+		<result property="detailArriveDate" column="DETAIL_ARRIVE_DATE"/>
+	</resultMap>
+	
+	<resultMap type="TourPlanCommentVO" id="TourPlanCommentVOMap">
+		<result property="commentNo" column="COMMENT_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="displayName" column="DISPLAY_NAME"/>
+		<result property="photoUrl" column="PHOTO_URL"/>
+	</resultMap>
+	
+	<resultMap type="TourPlanSpotMemoVo" id="TourPlanSpotMemoVOMap">
+		<result property="scheduleMemoNo" column="SCHEDULEMEMO_NO"/>
+		<result property="locationNo" column="LOCATION_NO"/>
+		<result property="recordNo" column="RECORD_NO"/>
+		<result property="memoType" column="MEMO_TYPE"/>
+		<result property="userUid" column="USER_UID"/>
+		<result property="regDate" column="REG_DATE"/>
+		<result property="contentId" column="CONTENTID"/>
+	</resultMap>
+	
+	<delete id="deleteTourSpotMemoBylocationMemoNo" parameterType="int">
+		DELETE FROM RECORD_SCHEDULEMEMO_TB
+		WHERE SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	
+	<!-- 여행일정 장소 메모 리스트 조회 -->
+	<select id="selectTourSpotMemoList" parameterType="int" resultMap="TourPlanSpotMemoVOMap">
+		SELECT *
+		FROM RECORD_SCHEDULEMEMO_TB
+		WHERE RECORD_NO = #{recordNo}
+	</select>
+	
+	<insert id="insertTourSpotMemo" parameterType="TourPlanSpotMemoVO">
+		INSERT INTO RECORD_SCHEDULEMEMO_TB (LOCATION_NO, RECORD_NO, MEMO_TYPE, USER_UID, TITLE, CONTENT, CONTENTID)
+		VALUES (#{locationNo}, #{recordNo}, #{memoType}, #{userUid}, #{title}, #{content}, #{contentId})
+	</insert>
+	
+	<!-- 여행일정 댓글 알림 등록 -->
+	<insert id="insertTourPlanCommentNotification" parameterType="TourPlanCommentVO">
+		INSERT INTO notisfication_tb (reciv_user_uid, target_user_uid, notisfication_type, notisfication_content_id, notisfication_message, notisfication_url, title)
+		values (#{recivUserUid}, #{userUid}, 1, #{recordNo}, #{content}, #{url}, #{title})
+	</insert>
+	
+	<!-- 여행일정 댓글 등록 -->
+	<insert id="insertTourPlanComment" parameterType="TourPlanCommentVO">
+		INSERT INTO RECORD_COMMENT_TB (COMMENT_NO, RECORD_NO, USER_UID, CONTENT)
+		VALUES (#{commentNo}, #{recordNo}, #{userUid}, #{content})
+	</insert>
+	
+	<!-- 여행일정 댓글 수정 -->
+	<update id="updateTourPlanCommentByRecordNo" parameterType="TourPlanCommentVO">
+		UPDATE RECORD_COMMENT_TB
+		SET CONTENT = #{content}
+		FROM COMMENT_NO = #{commnetNo}
+	</update>
+	
+	<!-- 여행일정 댓글 리스트 조회 -->
+	<select id="selectTourPlanCommentListByRecordNo" resultMap="TourPlanCommentVOMap" parameterType="int">
+		SELECT RC.*, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL
+		FROM RECORD_COMMENT_TB RC
+		LEFT OUTER JOIN USER_TB U
+        ON RC.USER_UID = U.USER_UID
+		WHERE RECORD_NO = #{recordNo}
+		AND RC.USER_UID = U.USER_UID
+		ORDER BY REG_DATE DESC
+	</select>
+	
+	<!-- 여행일정 댓글 삭제 -->
+	<delete id="deleteTourPlanCommentByCommentNo" parameterType="int">
+		DELETE FROM RECORD_COMMENT_TB
+		WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	
+	<!-- 여행일정 리스트 조회 -->
+	<select id="selectTourPlanList" resultMap="TourPlanVOMap" parameterType="TourPlanParamVO">
+		<![CDATA[
+			SELECT R.*, C.FILE_PATH FILE_PATH, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL,
+				(SELECT COUNT(*) FROM RECORD_LIKE_TB RLT WHERE R.RECORD_NO=RLT.RECORD_NO) LIKE_CNT,
+				(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB BBT WHERE R.RECORD_NO=BBT.TARGET_NO AND BBT.TARGET_TYPE LIKE '3') BOOKMARK_CNT,
+				(SELECT COUNT(*) FROM RECORD_CUSTOMIZING_TB RCMT WHERE R.RECORD_NO=RCMT.TARGET_RECORD_NO) CUSTOM_CNT,
+				(SELECT COUNT(*) FROM RECORD_COMMENT_TB RCT WHERE R.RECORD_NO=RCT.RECORD_NO) COMMENT_CNT
+			FROM RECORD_TB R
+			LEFT OUTER JOIN RECORD_COVER_TB C
+ 			ON R.RECORD_NO = C.RECORD_NO
+            LEFT OUTER JOIN USER_TB U
+            ON R.USER_UID = U.USER_UID
+			WHERE R.USER_UID = U.USER_UID
+			AND (DATEDIFF(ARRIVE_DATE, DEPARTURE_DATE) + 1) BETWEEN #{minTripDays} AND #{maxTripDays}
+			AND (R.TITLE LIKE '%${word}%' OR R.INTRODUCE LIKE '%${word}%' OR R.STRAPLINE LIKE '%${word}%') 
+			AND DATE(R.REG_DATE) >= #{datePeriodDate}
+			AND ISOPEN = 1
+			ORDER BY ${standard} ${order}
+			LIMIT #{startRow}, #{amount}
+		]]>
+	</select>
+	
+	<!-- 여행일정 리스트 추천수순 15개 -->
+	<select id="selectTourPlanListByLikeCnt" resultMap="TourPlanVOMap">
+		<![CDATA[
+			SELECT R.*, C.FILE_PATH FILE_PATH, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL,
+				(SELECT COUNT(*) FROM RECORD_LIKE_TB RLT WHERE R.RECORD_NO=RLT.RECORD_NO) LIKE_CNT,
+				(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB BBT WHERE R.RECORD_NO=BBT.TARGET_NO AND BBT.TARGET_TYPE LIKE '3') BOOKMARK_CNT,
+				(SELECT COUNT(*) FROM RECORD_CUSTOMIZING_TB RCMT WHERE R.RECORD_NO=RCMT.TARGET_RECORD_NO) CUSTOM_CNT,
+				(SELECT COUNT(*) FROM RECORD_COMMENT_TB RCT WHERE R.RECORD_NO=RCT.RECORD_NO) COMMENT_CNT
+			FROM RECORD_TB R
+			LEFT OUTER JOIN RECORD_COVER_TB C
+ 			ON R.RECORD_NO = C.RECORD_NO
+            LEFT OUTER JOIN USER_TB U
+            ON R.USER_UID = U.USER_UID
+			WHERE R.USER_UID = U.USER_UID
+			AND ISOPEN = 1
+			ORDER BY LIKE_CNT DESC
+			LIMIT 0, 15
+		]]>
+	</select>
+	
+	<!-- 여행일정 리스트 내 여행일정 -->
+	<select id="selectMyTourPlanList" resultMap="TourPlanVOMap" parameterType="String">
+		<![CDATA[
+			SELECT R.*, C.FILE_PATH FILE_PATH, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL,
+				(SELECT COUNT(*) FROM RECORD_LIKE_TB RLT WHERE R.RECORD_NO=RLT.RECORD_NO) LIKE_CNT,
+				(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB BBT WHERE R.RECORD_NO=BBT.TARGET_NO AND BBT.TARGET_TYPE LIKE '3') BOOKMARK_CNT,
+				(SELECT COUNT(*) FROM RECORD_CUSTOMIZING_TB RCMT WHERE R.RECORD_NO=RCMT.TARGET_RECORD_NO) CUSTOM_CNT,
+				(SELECT COUNT(*) FROM RECORD_COMMENT_TB RCT WHERE R.RECORD_NO=RCT.RECORD_NO) COMMENT_CNT
+			FROM RECORD_TB R
+			LEFT OUTER JOIN RECORD_COVER_TB C
+ 			ON R.RECORD_NO = C.RECORD_NO
+            LEFT OUTER JOIN USER_TB U
+            ON R.USER_UID = U.USER_UID
+			WHERE R.USER_UID = U.USER_UID
+			AND R.USER_UID like #{userUid}
+			ORDER BY RECORD_NO DESC
+		]]>
+	</select>
+	
+	<!-- 여행일정 리스트 북마크한 여행일정 -->
+	<select id="selectBookmarkTourPlanList" resultMap="TourPlanVOMap" parameterType="String">
+		<![CDATA[
+			SELECT RT.*, C.FILE_PATH FILE_PATH, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL,
+				(SELECT COUNT(*) FROM RECORD_LIKE_TB RLT WHERE BBT.TARGET_NO=RLT.RECORD_NO) LIKE_CNT,
+				(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB BBT2 WHERE BBT.TARGET_NO=BBT2.TARGET_NO AND BBT2.TARGET_TYPE = 3) BOOKMARK_CNT,
+				(SELECT COUNT(*) FROM RECORD_CUSTOMIZING_TB RCMT WHERE BBT.TARGET_NO=RCMT.TARGET_RECORD_NO) CUSTOM_CNT,
+				(SELECT COUNT(*) FROM RECORD_COMMENT_TB RCT WHERE BBT.TARGET_NO=RCT.RECORD_NO) COMMENT_CNT
+			FROM BOARD_BOOKMARK_TB BBT
+			LEFT OUTER JOIN RECORD_TB RT
+			ON BBT.TARGET_NO = RT.RECORD_NO
+			LEFT OUTER JOIN RECORD_COVER_TB C
+			ON BBT.TARGET_NO = C.RECORD_NO
+			LEFT OUTER JOIN USER_TB U
+			ON RT.USER_UID = U.USER_UID
+			WHERE BBT.USER_UID like #{userUid}
+			AND BBT.TARGET_TYPE = 3
+		]]>
+	</select>
+	
+	<!-- 여행일정 하나 조회 -->
+	<select id="selectTourPlan" resultMap="TourPlanVOMap" parameterType="int">
+		<![CDATA[
+			SELECT R.*, C.FILE_PATH FILE_PATH, U.DISPLAY_NAME DISPLAY_NAME, U.PHOTO_URL PHOTO_URL,
+				(SELECT COUNT(*) FROM RECORD_LIKE_TB RLT WHERE R.RECORD_NO=RLT.RECORD_NO) LIKE_CNT,
+				(SELECT COUNT(*) FROM BOARD_BOOKMARK_TB BBT WHERE R.RECORD_NO=BBT.TARGET_NO AND BBT.TARGET_TYPE LIKE '3') BOOKMARK_CNT,
+				(SELECT COUNT(*) FROM RECORD_CUSTOMIZING_TB RCMT WHERE R.RECORD_NO=RCMT.RECORD_NO) CUSTOM_CNT,
+				(SELECT COUNT(*) FROM RECORD_COMMENT_TB RCT WHERE R.RECORD_NO=RCT.RECORD_NO) COMMENT_CNT
+			FROM RECORD_TB R
+			LEFT OUTER JOIN RECORD_COVER_TB C
+ 			ON R.RECORD_NO = C.RECORD_NO
+            LEFT OUTER JOIN USER_TB U
+            ON R.USER_UID = U.USER_UID
+			WHERE R.RECORD_NO = #{recordNo}
+		]]>
+	</select>
+	
+	<!-- 여행일정 리스트 페이지수 조회 -->
+	<select id="selectTourPlanTotalPages" resultType="int" parameterType="TourPlanParamVO">
+		SELECT COUNT(*)
+		FROM RECORD_TB
+		WHERE (DATEDIFF(ARRIVE_DATE, DEPARTURE_DATE) + 1) BETWEEN #{minTripDays} AND #{maxTripDays}
+		AND (TITLE LIKE '%${word}%' OR INTRODUCE LIKE '%${word}%' OR STRAPLINE LIKE '%${word}%') 
+		AND DATE(REG_DATE) >= #{datePeriodDate}
+		AND ISOPEN = 1
+	</select>
+	
+	<!-- 여행일정 등록 -->
+	<insert id="insertTourPlan" parameterType="TourPlanVO">
+		INSERT INTO RECORD_TB (USER_UID, TITLE, STRAPLINE, INTRODUCE, DEPARTURE_DATE, ARRIVE_DATE, PERIOD, BUDGET, PICTURE)
+		VALUES (#{userUid}, #{title}, #{strapline}, #{introduce}, #{departureDate}, #{arriveDate}, #{period}, 0, 0)
+	<selectKey keyProperty="recordNo" resultType="int" order="AFTER">
+        SELECT last_insert_id()
+    </selectKey>
+	</insert>
+	
+	<!-- 여행일정 삭제 -->
+	<delete id="deleteTourPlanByRecordNo">
+		DELETE FROM RECORD_TB
+		WHERE RECORD_NO = #{recordNo}		
+	</delete>
+	
+	<!-- 여행일정 관광지 페이지수 조회 -->
+	<select id="selectTourPlanSpotTotalPages" parameterType="TourPlanSpotParamVO" resultType="int">
+			SELECT COUNT(*)
+			FROM PUBLIC_DATA_LIST_TB
+			WHERE (TITLE LIKE '%${word}%' OR addr1 LIKE '%${word}%' OR addr2 LIKE '%${word}%')
+		<if test="category == 'tour'">
+			AND (contentTypeId LIKE '12'
+            OR contentTypeId LIKE '14'
+            OR contentTypeId LIKE '15'
+            OR contentTypeId LIKE '25'
+            OR contentTypeId LIKE '28')
+		</if>
+		<if test="category == 'rest'">
+			AND contentTypeId LIKE '15'
+		</if>
+		<if test="category == 'bed'">
+			AND contentTypeId LIKE '32'
+		</if>
+	</select>
+
+	<!--  여행일정 관광지 리스트 조회 -->
+	<select id="selectTourPlanSpotList" parameterType="TourPlanSpotParamVO" resultMap="TourPlanSpotVOMap">
+			SELECT L.*, DC.homepage, DC.overview, C.CODE_NAME as areaname
+			FROM PUBLIC_DATA_LIST_TB L, PUBLIC_DATA_DETAIL_COMMON_TB DC, PUBLIC_CODE_TB C
+			WHERE L.contentid = DC.contentid
+			AND L.areacode = c.CODE_NO
+			AND c.GROUP_CODE_NO LIKE 'areacode'
+			AND (L.TITLE LIKE '%${word}%' OR L.addr1 LIKE '%${word}%' OR L.addr2 LIKE '%${word}%')
+		<if test="category == 'tour'">
+			AND (L.contentTypeId LIKE '12'
+            OR L.contentTypeId LIKE '14'
+            OR L.contentTypeId LIKE '15'
+            OR L.contentTypeId LIKE '25'
+            OR L.contentTypeId LIKE '28')
+		</if>
+		<if test="category == 'rest'">
+			AND L.contentTypeId LIKE '39'
+		</if>
+		<if test="category == 'bed'">
+			AND L.contentTypeId LIKE '32'
+		</if>
+			LIMIT #{startRow}, #{amount}
+	</select>
+	
+	<!-- 여행일정 관광지 북마크 페이지수 조회 -->
+	<select id="selectBookmarkSpotTotalPages" parameterType="TourPlanSpotParamVO" resultType="int">
+		SELECT COUNT(*)
+		FROM TOUR_BOOKMARK_TB TBT
+		LEFT OUTER JOIN PUBLIC_DATA_LIST_TB L ON L.contentid = TBT.content_id
+		LEFT OUTER JOIN PUBLIC_DATA_DETAIL_COMMON_TB DC ON L.contentid = DC.contentid
+		LEFT OUTER JOIN PUBLIC_CODE_TB C ON L.areacode = c.CODE_NO
+		WHERE USER_UID LIKE #{userUid}
+		AND STATUS LIKE 'on'
+		AND c.GROUP_CODE_NO LIKE 'areacode'
+		AND (L.TITLE LIKE '%${word}%' OR L.addr1 LIKE '%${word}%' OR L.addr2 LIKE '%${word}%')
+		<if test="category == 'tour'">
+			AND (L.contentTypeId LIKE '12'
+            OR L.contentTypeId LIKE '14'
+            OR L.contentTypeId LIKE '15'
+            OR L.contentTypeId LIKE '25'
+            OR L.contentTypeId LIKE '28')
+		</if>
+		<if test="category == 'rest'">
+			AND L.contentTypeId LIKE '39'
+		</if>
+		<if test="category == 'bed'">
+			AND L.contentTypeId LIKE '32'
+		</if>
+	</select>
+	
+	<!-- 여행일정 관광지 북마크 조회 -->
+	<select id="selectBookmarkSpotList" parameterType="TourPlanSpotParamVO" resultMap="TourPlanSpotVOMap">
+		SELECT L.*, DC.homepage, DC.overview, C.CODE_NAME as areaname
+		FROM tour_bookmark_tb TBT
+		LEFT OUTER JOIN PUBLIC_DATA_LIST_TB L ON L.contentid = TBT.content_id
+		LEFT OUTER JOIN PUBLIC_DATA_DETAIL_COMMON_TB DC ON L.contentid = DC.contentid
+		LEFT OUTER JOIN PUBLIC_CODE_TB C ON L.areacode = c.CODE_NO
+		WHERE USER_UID LIKE #{userUid}
+		AND STATUS LIKE 'on'
+		AND c.GROUP_CODE_NO LIKE 'areacode'
+		AND (L.TITLE LIKE '%${word}%' OR L.addr1 LIKE '%${word}%' OR L.addr2 LIKE '%${word}%')
+		<if test="category == 'tour'">
+			AND (L.contentTypeId LIKE '12'
+            OR L.contentTypeId LIKE '14'
+            OR L.contentTypeId LIKE '15'
+            OR L.contentTypeId LIKE '25'
+            OR L.contentTypeId LIKE '28')
+		</if>
+		<if test="category == 'rest'">
+			AND L.contentTypeId LIKE '39'
+		</if>
+		<if test="category == 'bed'">
+			AND L.contentTypeId LIKE '32'
+		</if>
+			LIMIT #{startRow}, #{amount}
+	</select>
+	
+	<!-- 여행일정 관광지 상세 조회 -->
+	<select id="selectSpotDetail" parameterType="int" resultMap="TourPlanSpotVOMap">
+			SELECT L.*, DC.homepage, DC.overview, C.CODE_NAME as areaname
+			FROM PUBLIC_DATA_LIST_TB L, PUBLIC_DATA_DETAIL_COMMON_TB DC, PUBLIC_CODE_TB C
+			WHERE L.contentid like #{contentid}
+			AND L.contentid = DC.contentid
+			AND L.areacode = c.CODE_NO
+			AND c.GROUP_CODE_NO LIKE 'areacode'
+	</select>
+	
+	<!-- 커버 이미지 파일 조회 -->
+	<select id="selectTourPlanCoverByNo" resultMap="TourPlanCoverVOMap" parameterType="int">
+		SELECT *
+		FROM RECORD_COVER_TB
+		WHERE RECORD_NO = #{recordNo}
+	</select>
+
+	<!-- 커버 이미지 파일 정보 삭제 -->
+	<select id="deleteTourPlanCoverByNo" parameterType="int">
+		DELETE 
+		FROM RECORD_COVER_TB
+		WHERE COVER_NO = #{coverNo}
+	</select>
+
+	<!-- 커버 이미지 정보 입력 -->
+	<insert id="insertTourPlanCover" parameterType="TourPlanCoverVO">
+		INSERT INTO RECORD_COVER_TB (RECORD_NO, REAL_PATH, FILE_PATH, ORI_NAME, FILE_NAME, FILE_SIZE)
+		VALUES (#{recordNo}, #{realPath}, #{filePath}, #{oriName}, #{fileName}, #{fileSize})
+	<selectKey keyProperty="coverNo" resultType="int" order="AFTER">
+        SELECT last_insert_id()
+    </selectKey>
+	</insert>
+
+	<!-- 여행일정 배경사진 항목 업데이트 -->
+	<update id="updateTourPlanImgByNo" parameterType="TourPlanVO">
+		UPDATE RECORD_TB
+		SET PICTURE = #{picture}
+		WHERE RECORD_NO = #{recordNo}
+	</update>
+	
+	<!-- 여행일정 제목 업데이트 -->
+	<update id="updateTourPlanTitle" parameterType="TourPlanVO">
+		UPDATE RECORD_TB
+		SET TITLE = #{title}
+		WHERE RECORD_NO = #{recordNo}
+	</update>
+	
+	<!-- 여행일정 전체 변경 -->
+	<update id="updateTourPlan" parameterType="TourPlanVO">
+		UPDATE RECORD_TB
+		SET RECORD_NO = #{recordNo}, USER_UID = #{userUid}, DEPARTURE_DATE = #{departureDate}, 
+		ARRIVE_DATE = #{arriveDate}, TITLE = #{title}, PERIOD = #{period}, STRAPLINE = #{strapline}, 
+		INTRODUCE = #{introduce} 
+		WHERE RECORD_NO = #{recordNo}
+	</update>
+	
+	<!-- 일정 스케줄 입력 -->
+	<insert id="insertTourPlanSchedule" parameterType="TourPlanScheduleVO">
+		INSERT INTO RECORD_LOCATION_TB (LOCATION_NO, RECORD_NO, TITLE, CONTENT_CODE, IMAGE_URL, DETAIL_DEPARTURE_DATE, CONTENT_TYPE_ID, DEPARTURE_DATE, MAPX, MAPY, DETAIL_ARRIVE_DATE)
+		VALUES (#{locationNo},#{recordNo},#{title},#{contentCode},#{imageUrl},#{detailDepartureDate},#{contentTypeId},#{departureDate},#{mapX},#{mapY},#{detailArriveDate})
+		ON DUPLICATE KEY UPDATE LOCATION_NO=#{locationNo},RECORD_NO=#{recordNo},TITLE=#{title},CONTENT_CODE=#{contentCode}, IMAGE_URL=#{imageUrl},DETAIL_DEPARTURE_DATE=#{detailDepartureDate},CONTENT_TYPE_ID=#{contentTypeId},DEPARTURE_DATE=#{departureDate},MAPX=#{mapX},MAPY=#{mapY},DETAIL_ARRIVE_DATE=#{detailArriveDate}
+	</insert>
+	
+	<!-- 일정 스케쥴 삭제 -->
+	<delete id="deleteTourPlanScheduleByRecordNo" parameterType="int">
+		DELETE 
+		FROM RECORD_LOCATION_TB
+		WHERE RECORD_NO = #{recordNo}
+	</delete>
+	
+	<!-- 일정 스케쥴 리스트 조회 -->
+	<select id="selectTourPlanScheduleListByRecordNo" resultMap="TourPlanScheduleVOMap" parameterType="int">
+		SELECT R.*, DC.homepage, DC.overview, DC.tel, DC.addr1
+		FROM RECORD_LOCATION_TB R
+		LEFT OUTER JOIN PUBLIC_DATA_DETAIL_COMMON_TB DC
+ 		ON R.CONTENT_CODE = DC.contentid
+		WHERE RECORD_NO = #{recordNo}
+	</select>
+	
+	<!-- 공개 비공개 설정 -->
+	<update id="updateTourPlanOpen" parameterType="TourPlanVO">
+		UPDATE RECORD_TB
+		SET ISOPEN = #{isOpen}
+		WHERE RECORD_NO = #{recordNo}
+	</update>
+	
+	<!-- 메인에 추천수 높은순으로 가져오기 -->
+	<select id="tourList" resultMap="TourPlanSpotVOMap" parameterType="string">
+		select *
+		from tour_like_tb a
+		inner join public_data_list_tb b
+		on a.content_id = b.contentid
+	</select>
+	
+	<!-- 예산 작성 -->
+	<insert id="insertTourPlanBudget" parameterType="TravelPriceVO">
+		insert into record_travelPrice_tb(RECORD_NO, CONTENTID, USER_UID, CONTENT, TRAVEL_PRICE, PRICE_TYPE, LOCATION_NO, SCHEDULEMEMO_NO)
+		values (#{recordNo}, #{contentId}, #{userUid}, #{content}, #{travelPrice}, #{priceType}, #{locationNo}, #{scheduleMemoNo})
+	</insert>
+	
+	<!-- 예산 삭제 -->
+	<delete id="deleteTourPlanBudgetByTravelPriceNo" parameterType="int">
+		delete from record_travelPrice_tb
+		where TRAVELPRICE_NO = #{travelPriceNo}
+	</delete>
+	
+	<!-- 예산 삭제 메모 삭제시 -->
+	<delete id="deleteTourPlanBudgetByScheduleMemoNo" parameterType="int">
+		delete from record_travelPrice_tb
+		where SCHEDULEMEMO_NO = #{scheduleMemoNo}
+	</delete>
+	
+	<select id="selectBudgetListForChartByRecordNo" parameterType="int" resultType="TourPlanBudgetForChartVO">
+		<![CDATA[
+			SELECT CONTENT AS content, TRAVEL_PRICE AS travelPrice, PRICE_TYPE AS priceType, TITLE AS title, DATEDIFF(DETAIL_DEPARTURE_DATE, (SELECT DEPARTURE_DATE FROM RECORD_TB WHERE RECORD_NO = #{recordNo}))+1 AS DATEARRAY
+			FROM RECORD_TRAVELPRICE_TB RTT
+			LEFT OUTER JOIN RECORD_LOCATION_TB RLT ON RLT.LOCATION_NO = RTT.LOCATION_NO
+			WHERE RTT.RECORD_NO = #{recordNo}
+		]]>
+	</select>
+	
+			
+		
+	
+	
+</mapper>
